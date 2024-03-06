@@ -1,52 +1,58 @@
-<mxfile host="app.diagrams.net" modified="2024-03-01T07:45:03.738Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="vhMy3sBq280fpFUa2umZ" version="24.0.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-06T02:15:14.415Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="N4KOBWpZ4ijgoEKxnO6l" version="24.0.2" type="github">
   <diagram name="Page-1" id="lYpnVUzSc3Qyu4cNX6qX">
-    <mxGraphModel dx="724" dy="515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2520" dy="1096" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-5" value="卡片" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-5" value="卡片" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="192.57999999999998" y="348.3" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-6" value="骰子" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-6" value="骰子" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="410" y="348.3" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-8" value="角色" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-8" value="角色" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="305" y="100" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-11" value="Relation" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ubh5LCb85SV-NIm6cSRn-5" target="Ubh5LCb85SV-NIm6cSRn-8">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-11" value="Relation" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="Ubh5LCb85SV-NIm6cSRn-5" target="Ubh5LCb85SV-NIm6cSRn-8" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="270" y="180" as="sourcePoint" />
             <mxPoint x="430" y="180" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-12" value="1..n" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" connectable="0" vertex="1" parent="Ubh5LCb85SV-NIm6cSRn-11">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-12" value="1..n" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" parent="Ubh5LCb85SV-NIm6cSRn-11" connectable="0" vertex="1">
           <mxGeometry x="-1" relative="1" as="geometry">
             <mxPoint y="-30" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-13" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" connectable="0" vertex="1" parent="Ubh5LCb85SV-NIm6cSRn-11">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-13" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" parent="Ubh5LCb85SV-NIm6cSRn-11" connectable="0" vertex="1">
           <mxGeometry x="1" relative="1" as="geometry">
             <mxPoint x="-5" y="10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-14" value="Relation" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ubh5LCb85SV-NIm6cSRn-6" target="Ubh5LCb85SV-NIm6cSRn-8">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-14" value="Relation" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="Ubh5LCb85SV-NIm6cSRn-6" target="Ubh5LCb85SV-NIm6cSRn-8" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="440" y="280" as="sourcePoint" />
             <mxPoint x="600" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-15" value="1..n" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" connectable="0" vertex="1" parent="Ubh5LCb85SV-NIm6cSRn-14">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-15" value="1..n" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" parent="Ubh5LCb85SV-NIm6cSRn-14" connectable="0" vertex="1">
           <mxGeometry x="-1" relative="1" as="geometry">
             <mxPoint x="10" y="-28" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-16" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" connectable="0" vertex="1" parent="Ubh5LCb85SV-NIm6cSRn-14">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-16" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" parent="Ubh5LCb85SV-NIm6cSRn-14" connectable="0" vertex="1">
           <mxGeometry x="1" relative="1" as="geometry">
             <mxPoint x="25" y="10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ubh5LCb85SV-NIm6cSRn-17" value="BatteManger" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Ubh5LCb85SV-NIm6cSRn-17" value="BatteManger" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="710" y="90" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qSZU-KECuRgDc3QVDV8M-1" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;在玩家從標題畫面點擊開始，選擇角色後，會進入一場遊戲。&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;一場遊戲含有六個隨機生成的小關卡與一名玩家，關卡內是一個樹狀結構，包含著一個個互通的節點（Node），玩家可以在裡面行走，並且玩家碰到節點上方的物體時，觸發相應效果。&lt;/div&gt;&lt;div&gt;節點上會出現的物體包括以下：&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;1. 怪物 -&amp;gt; 碰到後與玩家進入戰鬥狀態，戰鬥勝利則獲得金錢與經驗&lt;/div&gt;&lt;div&gt;2. 蘋果 -&amp;gt; 回覆一定血量&lt;/div&gt;&lt;div&gt;3. 寶箱 -&amp;gt; 隨機獲得卡片（官方又稱它為裝備）&lt;/div&gt;&lt;div&gt;4. 金錢商店 -&amp;gt; 可以讓玩家使用金錢購買卡片/蘋果/升級卡片&lt;/div&gt;&lt;div&gt;5. 交換商店 -&amp;gt; 可以讓玩家使用現有的卡片跟它交換卡片&lt;/div&gt;&lt;div&gt;6. 鐵匠鋪 -&amp;gt; 可以讓玩家升級卡片&lt;/div&gt;&lt;div&gt;7. 出口 -&amp;gt; 會前往下一層樓&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;每局目標為玩家抵達第六層擊倒Boss。&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;玩家戰鬥獲得的金錢會使玩家升級，升級會使玩家回滿血量，並且增加骰子能力，基本來說，每支角色都會有在特定等級增加骰子的能力，但取決於角色&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;基本戰鬥玩法由骰子與卡片組成，每回合都會隨機生成幾顆骰子（看角色等級），卡片會有要求的骰子大小（比如說一定要大於3之類的），玩家將相應骰子放入後可以使用卡片效果，玩家回合骰子用完/可用卡片沒了，玩家就可以按下結束回合切換至敵人，而敵人也是同樣的戰鬥模式，勝利條件是誰活到最後。&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;怪物有不同種類，並且Boss也是一種怪物，怪物每個也與玩家一樣有著自己得卡片，每支怪物有著屬於自己得牌組，並且部份怪物有自己的特性（不一定為壞的）&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;玩家擁有以下屬性/功能&lt;/div&gt;&lt;div&gt;1. 血量&lt;/div&gt;&lt;div&gt;2. 卡片背包&lt;/div&gt;&lt;div&gt;3. 戰鬥卡片列表&lt;/div&gt;&lt;div&gt;4. 特殊能力&lt;/div&gt;&lt;div&gt;5. 行走能力&lt;/div&gt;&lt;div&gt;6. 金錢&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;戰鬥卡片列表包含一個3x2格的卡排放置空間，玩家每次戰鬥只能帶這些卡片進去。&lt;/div&gt;&lt;div&gt;卡牌背包是一個4x5格的卡牌放置空間，在戰鬥中不會帶入，純粹備用。&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;卡片所佔的空間1-2格不等，並且有可能在升級時改變卡片佔用空間。&lt;/div&gt;&lt;div&gt;有些卡片一回合可以使用多次。&lt;br&gt;&lt;/div&gt;&lt;div&gt;卡片升級可能會導致下面幾種結果&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;1. 減少卡片佔用格數&lt;/div&gt;&lt;div&gt;2. 解除/放寬卡片中的骰子限制&lt;/div&gt;&lt;div&gt;3. 增加卡片基本傷害&lt;/div&gt;&lt;div&gt;4. 增加卡片再依回合內可使用的次數上限&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;特殊能力每支角色不一樣。&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-720" y="90" width="515" height="780" as="geometry" />
+        </mxCell>
+        <mxCell id="qSZU-KECuRgDc3QVDV8M-2" value="&lt;div&gt;Dicey Dungeons User Story&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-547.5" y="60" width="170" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
