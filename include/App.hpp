@@ -1,7 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "DiceUtils/Dice.hpp"
 #include "pch.hpp" // IWYU pragma: export
+#include <memory>
 
 class App {
 public:
@@ -24,6 +26,7 @@ private:
 
 private:
     State m_CurrentState = State::START;
+    std::shared_ptr<DiceUtils::Dice> m_Dice;
 };
 
 #endif

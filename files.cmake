@@ -5,6 +5,7 @@ set(SRC_FILES
     Character/HealthSystem.cpp
     Cards/CardSystem.cpp
     Cards/Card.cpp
+    DiceUtils/Dice.cpp
 )
 
 set(INCLUDE_FILES
@@ -14,6 +15,7 @@ set(INCLUDE_FILES
     Character/HealthSystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
+    DiceUtils/Dice.hpp
 )
 
 set(TEST_FILES
