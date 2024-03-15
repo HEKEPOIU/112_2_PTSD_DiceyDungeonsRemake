@@ -1,4 +1,4 @@
-#include "GameCore/GameManarger.hpp"
+#include "GameCore/GameManager.hpp"
 #include <stdexcept>
 
 namespace GameCore {

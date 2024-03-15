@@ -6,6 +6,8 @@ namespace Character {
 class HealthSystem {
 
 public:
+    HealthSystem(int maxHp, int currentHp);
+
     int GetCurrentHealth() const { return m_CurrentHealth; }
     int GetMaxHealth() const { return m_MaxHealth; }
     void SetCurrentHealth(int value);

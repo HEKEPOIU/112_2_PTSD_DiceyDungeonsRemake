@@ -1,7 +1,10 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "DiceUtils/Dice.hpp"
+#include "Character/Dices/Thief.hpp"
+#include "Character/Enemy.hpp"
+#include "EventSystem/BattleSystem.hpp"
+#include "Util/Root.hpp"
 #include "pch.hpp" // IWYU pragma: export
 #include <memory>
 
@@ -26,7 +29,10 @@ private:
 
 private:
     State m_CurrentState = State::START;
-    std::shared_ptr<DiceUtils::Dice> m_Dice;
+    std::shared_ptr<Character::Dices::Thief> m_PlayerDice;
+    std::shared_ptr<Character::Enemy> m_TestEnemy;
+    std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
+    std::unique_ptr<Util::Root> m_Root = std::make_unique<Util::Root>();
 };
 
 #endif

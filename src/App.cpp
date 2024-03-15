@@ -1,6 +1,9 @@
 #include "App.hpp"
 
-#include "DiceUtils/Dice.hpp"
+#include "Character/Dices/Thief.hpp"
+#include "Character/Enemy.hpp"
+#include "Character/PlayerDice.hpp"
+#include "EventSystem/BattleSystem.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -8,8 +11,19 @@
 
 void App::Start() {
     LOG_TRACE("Start");
-    m_Dice = std::make_shared<DiceUtils::Dice>(6);
     m_CurrentState = State::UPDATE;
+    m_PlayerDice = std::make_shared<Character::Dices::Thief>(
+        1, 24, 24, RESOURCE_DIR "/Character/Thief_Back.png");
+    m_TestEnemy = std::make_shared<Character::Enemy>(
+        1, 12, 12, RESOURCE_DIR "/Enemy/Enemy01.png");
+
+    m_BattleSystem = std::make_shared<EventSystem::BattleSystem>(
+        nullptr, m_PlayerDice, m_TestEnemy);
+
+    m_Root->AddChild(m_PlayerDice);
+    m_Root->AddChild(m_TestEnemy);
+    m_Root->AddChild(m_BattleSystem);
+    m_BattleSystem->EventStart();
 }
 
 void App::Update() {
@@ -20,7 +34,8 @@ void App::Update() {
      * Do not touch the code below as they serve the purpose for
      * closing the window.
      */
-    m_Dice->Draw();
+    m_Root->Update();
+    m_BattleSystem->EventUpdate();
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }

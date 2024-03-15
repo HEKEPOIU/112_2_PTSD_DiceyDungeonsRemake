@@ -1,6 +1,8 @@
 #ifndef GAMECORE_GAMEMANARGER_HPP
 #define GAMECORE_GAMEMANARGER_HPP
 
+#include "GameCore/MainGame.hpp"
+#include <memory>
 namespace GameCore {
 class GameManager {
 public:
@@ -13,6 +15,7 @@ public:
 
 private:
     GameStates m_CurrentStates;
+    std::shared_ptr<MainGame> m_MainGame;
 };
 } // namespace GameCore
 

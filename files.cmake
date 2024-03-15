@@ -1,21 +1,39 @@
 set(SRC_FILES
     App.cpp
-    GameCore/GameManarger.cpp
+    GameCore/GameManager.cpp
+    GameCore/MainGame.cpp
     Character/BaseCharacter.cpp
     Character/HealthSystem.cpp
+    Character/Enemy.cpp
+    Character/PlayerDice.cpp
+    Character/Dices/Thief.cpp
+    EventSystem/BaseEventSystem.cpp
     Cards/CardSystem.cpp
     Cards/Card.cpp
+    EventSystem/BattleSystem.cpp
     DiceUtils/Dice.cpp
+    AI/EnemyAI.cpp
+    Player/PlayerBattleInput.cpp
+    UI/UIManager.cpp
 )
 
 set(INCLUDE_FILES
     App.hpp
-    GameCore/GameManarger.hpp
+    GameCore/GameManager.hpp
+    GameCore/MainGame.hpp
     Character/BaseCharacter.hpp
     Character/HealthSystem.hpp
+    Character/Enemy.hpp
+    Character/PlayerDice.hpp
+    Character/Dices/Thief.hpp
+    EventSystem/BaseEventSystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
+    EventSystem/BattleSystem.hpp
     DiceUtils/Dice.hpp
+    AI/EnemyAI.hpp
+    Player/PlayerBattleInput.hpp
+    UI/UIManager.hpp
 )
 
 set(TEST_FILES

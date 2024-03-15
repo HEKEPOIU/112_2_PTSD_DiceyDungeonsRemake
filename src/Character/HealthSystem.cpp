@@ -3,6 +3,11 @@
 #include <glm/common.hpp>
 
 namespace Character {
+
+HealthSystem::HealthSystem(int maxHp, int currentHp)
+    : m_MaxHealth(maxHp),
+      m_CurrentHealth(currentHp) {}
+
 void HealthSystem::SetCurrentHealth(int value) {
     int hpTemp = m_CurrentHealth;
     int newHealth = glm::clamp(value, 0, m_MaxHealth);
