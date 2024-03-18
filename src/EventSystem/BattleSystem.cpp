@@ -12,6 +12,8 @@ BattleSystem::BattleSystem(std::shared_ptr<GameCore::MainGame> mainGame,
       m_Player(player, {}),
       m_Enemy(target, {}) {
     m_PlayerInput = std::make_shared<Player::PlayerBattleInput>();
+    m_UIManager = std::make_shared<UI::UIManager>();
+    AddChild(m_UIManager);
 }
 
 void BattleSystem::EventStart() {
@@ -23,6 +25,7 @@ void BattleSystem::EventUpdate() {
     switch (m_CurrentStates) {
     case (CurrentStatus::PLAYERTURN):
         m_PlayerInput->InputUpdate(*this);
+        m_Player.first->RoundUpdate(*this);
         break;
     case (CurrentStatus::ENEMYTURN):
         break;

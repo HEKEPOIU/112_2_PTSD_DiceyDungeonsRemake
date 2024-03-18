@@ -5,6 +5,7 @@
 #include "DiceUtils/Dice.hpp"
 #include "EventSystem/BaseEventSystem.hpp"
 #include "Player/PlayerBattleInput.hpp"
+#include "UI/UIManager.hpp"
 #include <memory>
 #include <utility>
 namespace EventSystem {
@@ -45,6 +46,7 @@ private:
               std::vector<std::shared_ptr<DiceUtils::Dice>>>
         m_Enemy;
     std::shared_ptr<Player::PlayerBattleInput> m_PlayerInput;
+    std::shared_ptr<UI::UIManager> m_UIManager;
     CurrentStatus m_CurrentStates = CurrentStatus::PLAYERTURN;
 };
 } // namespace EventSystem

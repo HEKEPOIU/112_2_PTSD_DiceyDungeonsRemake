@@ -4,6 +4,7 @@
 #include "Character/Enemy.hpp"
 #include "Character/PlayerDice.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include "ResourceConfig.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -13,9 +14,9 @@ void App::Start() {
     LOG_TRACE("Start");
     m_CurrentState = State::UPDATE;
     m_PlayerDice = std::make_shared<Character::Dices::Thief>(
-        1, 24, 24, RESOURCE_DIR "/Character/Thief_Back.png");
+        1, 24, 24, RESOURCE_DIR "/graphics/characters/thief/static_1080.png");
     m_TestEnemy = std::make_shared<Character::Enemy>(
-        1, 12, 12, RESOURCE_DIR "/Enemy/Enemy01.png");
+        1, 12, 12, ENEMY_DIR + "/frog/static_1080.png");
 
     m_BattleSystem = std::make_shared<EventSystem::BattleSystem>(
         nullptr, m_PlayerDice, m_TestEnemy);

@@ -13,7 +13,7 @@ void PlayerDice::RoundUpdate(EventSystem::BattleSystem &currentBattle){};
 void PlayerDice::RoundEnd(EventSystem::BattleSystem &currentBattle){};
 
 void PlayerDice::SetBattlePosition() {
-    m_Transform.translation = {-750, -400};
-    m_Transform.scale = {2.f, 2.f};
+    m_Transform.translation = {-800, -350};
+    m_Transform.scale = {1.f, 1.f};
 }
 } // namespace Character

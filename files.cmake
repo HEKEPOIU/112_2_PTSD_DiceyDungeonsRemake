@@ -34,6 +34,7 @@ set(INCLUDE_FILES
     AI/EnemyAI.hpp
     Player/PlayerBattleInput.hpp
     UI/UIManager.hpp
+    ResourceConfig.hpp
 )
 
 set(TEST_FILES
