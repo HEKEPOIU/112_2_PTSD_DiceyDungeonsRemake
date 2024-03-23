@@ -12,7 +12,7 @@ BattleSystem::BattleSystem(std::shared_ptr<GameCore::MainGame> mainGame,
       m_Player(player, {}),
       m_Enemy(target, {}) {
     m_PlayerInput = std::make_shared<Player::PlayerBattleInput>();
-    m_UIManager = std::make_shared<UI::UIManager>();
+    m_UIManager = std::make_shared<UI::BattleUIManager>(*this);
     AddChild(m_UIManager);
 }
 

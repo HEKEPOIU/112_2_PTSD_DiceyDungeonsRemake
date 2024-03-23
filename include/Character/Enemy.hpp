@@ -7,7 +7,8 @@
 namespace Character {
 class Enemy : public BaseCharacter {
 public:
-    Enemy(int level, int maxHp, int currentHp, const std::string &path);
+    Enemy(const std::string &name, int level, int maxHp, int currentHp,
+          const std::string &path);
 
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
     virtual void RoundUpdate(EventSystem::BattleSystem &currentBattle) override;

@@ -14,7 +14,8 @@ set(SRC_FILES
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
     Player/PlayerBattleInput.cpp
-    UI/UIManager.cpp
+    UI/BattleUIManager.cpp
+    UI/Utils/Slider.cpp
 )
 
 set(INCLUDE_FILES
@@ -33,8 +34,9 @@ set(INCLUDE_FILES
     DiceUtils/Dice.hpp
     AI/EnemyAI.hpp
     Player/PlayerBattleInput.hpp
-    UI/UIManager.hpp
+    UI/BattleUIManager.hpp
     ResourceConfig.hpp
+    UI/Utils/Slider.hpp
 )
 
 set(TEST_FILES

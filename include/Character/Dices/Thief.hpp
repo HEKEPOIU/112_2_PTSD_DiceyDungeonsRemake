@@ -7,8 +7,9 @@ namespace Character {
 namespace Dices {
 class Thief : public PlayerDice {
 public:
-    Thief(int level, int maxHp, int currentHp, const std::string &path)
-        : PlayerDice(level, maxHp, currentHp, path){};
+    Thief(const std::string &name, int level, int maxHp, int currentHp,
+          const std::string &path)
+        : PlayerDice(name, level, maxHp, currentHp, path){};
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
 
 private:

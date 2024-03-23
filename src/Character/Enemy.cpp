@@ -4,8 +4,9 @@
 
 namespace Character {
 
-Enemy::Enemy(int level, int maxHp, int currentHp, const std::string &path)
-    : BaseCharacter(level, maxHp, currentHp, path) {}
+Enemy::Enemy(const std::string &name, int level, int maxHp, int currentHp,
+             const std::string &path)
+    : BaseCharacter(name, level, maxHp, currentHp, path) {}
 
 void Enemy::RoundStart(EventSystem::BattleSystem &currentBattle){
 

@@ -2,6 +2,9 @@
 #define CHARACTER_HEALTHSYSTEM_HPP
 
 #include <functional>
+#include <string>
+#include <unordered_map>
+#include <vector>
 namespace Character {
 class HealthSystem {
 
@@ -14,10 +17,23 @@ public:
     void SetMaxHealth(int value);
     void ModifyCurrentHealth(int addValue);
     void ModifyMaxHealth(int addValue);
+    void BindOnCurrentHealthChange(
+        const std::string &eventId,
+        std::function<void(int, int)> onCurrentHealthChange);
+
+    void BindOnMaxHealthChange(const std::string &eventId,
+                               std::function<void(int, int)> onMaxHealthChange);
+
+    void UnBindOnCurrentHealthChange(const std::string &eventId);
+
+    void UnBindOnMaxHealthChange(const std::string &eventId);
 
 private:
-    std::function<void(int, int)> m_OnCurrentHealthChange;
-    std::function<void(int, int)> m_OnMaxHealthChange;
+    std::unordered_map<std::string, std::function<void(int, int)>>
+        m_OnCurrentHealthChange;
+    std::unordered_map<std::string, std::function<void(int, int)>>
+        m_OnMaxHealthChange;
+
     int m_MaxHealth;
     int m_CurrentHealth;
 };

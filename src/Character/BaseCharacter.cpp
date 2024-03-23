@@ -7,12 +7,40 @@
 
 namespace Character {
 
-BaseCharacter::BaseCharacter(int level, int maxHp, int currentHp,
-                             const std::string &path)
+BaseCharacter::BaseCharacter(const std::string &name, int level, int maxHp,
+                             int currentHp, const std::string &path)
     : m_CharacterImage(std::make_shared<Util::Image>(path)),
       m_HealthSystem(std::make_unique<HealthSystem>(maxHp, currentHp)),
-      m_Level(level) {
+      m_Level(level),
+      m_Name(name) {
     SetDrawable(m_CharacterImage);
 }
+
+void BaseCharacter::BindOnCurrentHealthChange(
+    const std::string &eventId,
+    std::function<void(int, int)> onCurrentHealthChange) {
+    m_HealthSystem->BindOnCurrentHealthChange(eventId, onCurrentHealthChange);
+}
+
+void BaseCharacter::BindOnMaxHealthChange(
+    const std::string &eventId,
+    std::function<void(int, int)> onMaxHealthChange) {
+    m_HealthSystem->BindOnMaxHealthChange(eventId, onMaxHealthChange);
+}
+
+void BaseCharacter::UnBindOnCurrentHealthChange(const std::string &eventId) {
+    m_HealthSystem->UnBindOnCurrentHealthChange(eventId);
+}
+
+void BaseCharacter::UnBindOnMaxHealthChange(const std::string &eventId) {
+    m_HealthSystem->UnBindOnMaxHealthChange(eventId);
+}
+
+void BaseCharacter::RoundStart(EventSystem::BattleSystem &currentBattle) {
+    m_HealthSystem->SetCurrentHealth(m_HealthSystem->GetCurrentHealth());
+    m_HealthSystem->SetMaxHealth(m_HealthSystem->GetMaxHealth());
+}
+void BaseCharacter::RoundUpdate(EventSystem::BattleSystem &currentBattle) {}
+void BaseCharacter::RoundEnd(EventSystem::BattleSystem &currentBattle) {}
 
 } // namespace Character
