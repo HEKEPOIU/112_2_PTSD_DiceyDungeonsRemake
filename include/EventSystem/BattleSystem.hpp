@@ -6,8 +6,10 @@
 #include "EventSystem/BaseEventSystem.hpp"
 #include "Player/PlayerBattleInput.hpp"
 #include "UI/BattleUIManager.hpp"
+#include "UI/CardsRenderer/CardRenderer.hpp"
 #include <memory>
 #include <utility>
+#include <vector>
 namespace EventSystem {
 class BattleSystem : public BaseEventSystem {
 
@@ -32,8 +34,13 @@ public:
         return m_Enemy;
     }
 
+    const CurrentStatus &GetCurrentStatus() { return m_CurrentStates; }
+
     void RollDice(unsigned short target = 0);
-    void SetUpDice(std::shared_ptr<DiceUtils::Dice> dice);
+    void RemoveDice(const std::shared_ptr<DiceUtils::Dice> &dice);
+    void SetUpDice(const std::shared_ptr<DiceUtils::Dice> &dice);
+    void AddCard(const std::shared_ptr<UI::CardsRenderer::CardRenderer> &card);
+    void ChangeStates();
     virtual void EventStart() override;
     virtual void EventUpdate() override;
     virtual void EventEnd() override;
@@ -47,6 +54,8 @@ private:
         m_Enemy;
     std::shared_ptr<Player::PlayerBattleInput> m_PlayerInput;
     std::shared_ptr<UI::BattleUIManager> m_UIManager;
+    std::vector<std::shared_ptr<UI::CardsRenderer::CardRenderer>>
+        m_CardRenderer;
     CurrentStatus m_CurrentStates = CurrentStatus::PLAYERTURN;
 };
 } // namespace EventSystem

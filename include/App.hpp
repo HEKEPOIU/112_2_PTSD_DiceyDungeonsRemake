@@ -1,7 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Character/Dices/Thief.hpp"
+#include "Character/Dices/Warrior.hpp"
 #include "Character/Enemy.hpp"
 #include "EventSystem/BattleSystem.hpp"
 #include "Util/Renderer.hpp"
@@ -29,7 +29,7 @@ private:
 
 private:
     State m_CurrentState = State::START;
-    std::shared_ptr<Character::Dices::Thief> m_PlayerDice;
+    std::shared_ptr<Character::Dices::Warrior> m_PlayerDice;
     std::shared_ptr<Character::Enemy> m_TestEnemy;
     std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
     std::unique_ptr<Util::Renderer> m_Root = std::make_unique<Util::Renderer>();

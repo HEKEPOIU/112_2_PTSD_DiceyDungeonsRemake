@@ -35,6 +35,13 @@ public:
 
     int GetCurrentHealth() const { return m_HealthSystem->GetCurrentHealth(); }
     int GetMaxHealth() const { return m_HealthSystem->GetMaxHealth(); }
+    void ModifyCurrentHealth(int value) {
+        m_HealthSystem->ModifyCurrentHealth(value);
+    }
+    void SetCurrentHealth(int value) {
+        m_HealthSystem->SetCurrentHealth(value);
+    };
+    void SetMaxHealth(int value) { m_HealthSystem->SetMaxHealth(value); };
 
 protected:
     std::string m_Name;

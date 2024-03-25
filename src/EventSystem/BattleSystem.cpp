@@ -24,6 +24,7 @@ void BattleSystem::EventStart() {
 void BattleSystem::EventUpdate() {
     switch (m_CurrentStates) {
     case (CurrentStatus::PLAYERTURN):
+        m_UIManager->Update();
         m_PlayerInput->InputUpdate(*this);
         m_Player.first->RoundUpdate(*this);
         break;
@@ -45,7 +46,39 @@ void BattleSystem::RollDice(unsigned short target) {
     SetUpDice(newDice);
 }
 
-void BattleSystem::SetUpDice(std::shared_ptr<DiceUtils::Dice> dice) {
+void BattleSystem::RemoveDice(const std::shared_ptr<DiceUtils::Dice> &dice) {
+    switch (m_CurrentStates) {
+    case (CurrentStatus::PLAYERTURN):
+        m_Player.second.erase(
+            std::remove(m_Player.second.begin(), m_Player.second.end(), dice),
+            m_Player.second.end());
+        break;
+    case (CurrentStatus::ENEMYTURN):
+        m_Enemy.second.erase(
+            std::remove(m_Enemy.second.begin(), m_Enemy.second.end(), dice),
+            m_Enemy.second.end());
+        break;
+    }
+}
+
+void BattleSystem::AddCard(
+    const std::shared_ptr<UI::CardsRenderer::CardRenderer> &card) {
+    m_CardRenderer.push_back(card);
+}
+
+void BattleSystem::ChangeStates() {
+    switch (m_CurrentStates) {
+    case (CurrentStatus::PLAYERTURN):
+        m_CurrentStates = CurrentStatus::ENEMYTURN;
+        break;
+    case (CurrentStatus::ENEMYTURN):
+        m_CurrentStates = CurrentStatus::PLAYERTURN;
+        break;
+    }
+    m_CardRenderer.clear();
+};
+void BattleSystem::SetUpDice(const std::shared_ptr<DiceUtils::Dice> &dice) {
+    dice->SetZIndex(10);
     AddChild(dice);
     switch (m_CurrentStates) {
     case (CurrentStatus::PLAYERTURN):

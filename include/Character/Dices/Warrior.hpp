@@ -5,10 +5,10 @@
 
 namespace Character {
 namespace Dices {
-class Thief : public PlayerDice {
+class Warrior : public PlayerDice {
 public:
-    Thief(const std::string &name, int level, int maxHp, int currentHp,
-          const std::string &path)
+    Warrior(const std::string &name, int level, int maxHp, int currentHp,
+            const std::string &path)
         : PlayerDice(name, level, maxHp, currentHp, path){};
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
 

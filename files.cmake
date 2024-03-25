@@ -6,16 +6,20 @@ set(SRC_FILES
     Character/HealthSystem.cpp
     Character/Enemy.cpp
     Character/PlayerDice.cpp
-    Character/Dices/Thief.cpp
+    Character/Dices/Warrior.cpp
     EventSystem/BaseEventSystem.cpp
     Cards/CardSystem.cpp
     Cards/Card.cpp
+    Cards/Variant/SwordCard.cpp
+    Cards/RequireVariant/NoneRequire.cpp
     EventSystem/BattleSystem.cpp
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
     Player/PlayerBattleInput.cpp
     UI/BattleUIManager.cpp
     UI/Utils/Slider.cpp
+    UI/CardsRenderer/CardRenderer.cpp
+    UI/CardsRenderer/RequireSlotRenderer.cpp
 )
 
 set(INCLUDE_FILES
@@ -26,10 +30,13 @@ set(INCLUDE_FILES
     Character/HealthSystem.hpp
     Character/Enemy.hpp
     Character/PlayerDice.hpp
-    Character/Dices/Thief.hpp
+    Character/Dices/Warrior.hpp
     EventSystem/BaseEventSystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
+    Cards/Variant/SwordCard.hpp
+    Cards/RequireVariant/NoneRequire.hpp
+    Cards/CardRequireSlot.hpp
     EventSystem/BattleSystem.hpp
     DiceUtils/Dice.hpp
     AI/EnemyAI.hpp
@@ -37,6 +44,8 @@ set(INCLUDE_FILES
     UI/BattleUIManager.hpp
     ResourceConfig.hpp
     UI/Utils/Slider.hpp
+    UI/CardsRenderer/CardRenderer.hpp
+    UI/CardsRenderer/RequireSlotRenderer.hpp
 )
 
 set(TEST_FILES

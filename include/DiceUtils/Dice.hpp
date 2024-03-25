@@ -19,8 +19,6 @@ public:
     unsigned short GetNum() const { return m_DiceNumber; };
     void SetCurrentState(DiceStates value) { currentState = value; };
     DiceStates GetCurrentState() { return currentState; }
-    bool IsOnTop(const glm::vec2 &position) const;
-    glm::vec4 GetBoundingBox() const;
 
 private:
     void InitImage();

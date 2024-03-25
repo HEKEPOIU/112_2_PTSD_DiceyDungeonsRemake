@@ -1,10 +1,9 @@
 #include "App.hpp"
 
-#include "Character/Dices/Thief.hpp"
-#include "Character/Enemy.hpp"
-#include "Character/PlayerDice.hpp"
-#include "EventSystem/BattleSystem.hpp"
+#include "Cards/Variant/SwordCard.hpp"
+#include "Character/Dices/Warrior.hpp"
 #include "ResourceConfig.hpp"
+#include "UI/CardsRenderer/CardRenderer.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
@@ -13,7 +12,7 @@
 void App::Start() {
     LOG_TRACE("Start");
     m_CurrentState = State::UPDATE;
-    m_PlayerDice = std::make_shared<Character::Dices::Thief>(
+    m_PlayerDice = std::make_shared<Character::Dices::Warrior>(
         "Thief", 1, 24, 24,
         RESOURCE_DIR "/graphics/characters/thief/static_1080.png");
     m_TestEnemy = std::make_shared<Character::Enemy>(
@@ -22,9 +21,13 @@ void App::Start() {
     m_BattleSystem = std::make_shared<EventSystem::BattleSystem>(
         nullptr, m_PlayerDice, m_TestEnemy);
 
+    auto cardRenderTest = std::make_shared<UI::CardsRenderer::CardRenderer>(
+        std::make_shared<Cards::Variant::SwordCard>(1, 2));
+
     m_Root->AddChild(m_PlayerDice);
     m_Root->AddChild(m_TestEnemy);
     m_Root->AddChild(m_BattleSystem);
+    m_Root->AddChild(cardRenderTest);
     m_BattleSystem->EventStart();
 }
 

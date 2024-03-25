@@ -39,6 +39,7 @@ void BaseCharacter::UnBindOnMaxHealthChange(const std::string &eventId) {
 void BaseCharacter::RoundStart(EventSystem::BattleSystem &currentBattle) {
     m_HealthSystem->SetCurrentHealth(m_HealthSystem->GetCurrentHealth());
     m_HealthSystem->SetMaxHealth(m_HealthSystem->GetMaxHealth());
+    // m_BattleCards
 }
 void BaseCharacter::RoundUpdate(EventSystem::BattleSystem &currentBattle) {}
 void BaseCharacter::RoundEnd(EventSystem::BattleSystem &currentBattle) {}
