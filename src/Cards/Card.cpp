@@ -1,5 +1,6 @@
 #include "Cards/Card.hpp"
 #include "Cards/CardRequireSlot.hpp"
+#include "Util/Logger.hpp"
 
 namespace Cards {
 
