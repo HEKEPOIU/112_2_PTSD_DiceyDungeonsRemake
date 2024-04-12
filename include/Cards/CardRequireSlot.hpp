@@ -16,9 +16,8 @@ public:
         : m_Owner(card){};
 
     virtual bool IsFit(int size) = 0;
-    void SetContainDice(
-        const std::shared_ptr<DiceUtils::Dice> &dice,
-        const std::shared_ptr<EventSystem::BattleSystem> &currentBattle) {
+    virtual void SetContainDice(const std::shared_ptr<DiceUtils::Dice> &dice,
+                                EventSystem::BattleSystem &currentBattle) {
         if (m_ContainDice == dice) {
             return;
         }
@@ -26,14 +25,17 @@ public:
         m_Owner.Use(currentBattle);
     }
 
-    void Reset() { m_ContainDice = nullptr; }
+    virtual void Reset() { m_ContainDice = nullptr; }
 
     int GetContainDiceNum() const { return m_ContainDice->GetNum(); }
+    const std::shared_ptr<DiceUtils::Dice> &GetContainDice() {
+        return m_ContainDice;
+    }
 
     virtual std::shared_ptr<UI::CardsRenderer::RequireSlotRenderer>
     GetRenderer() = 0;
 
-private:
+protected:
     std::shared_ptr<DiceUtils::Dice> m_ContainDice;
     const Card &m_Owner;
 };

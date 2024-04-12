@@ -18,7 +18,7 @@ class RequireSlotRenderer : public Util::GameObject {
 public:
     RequireSlotRenderer(Cards::CardRequireSlot &requireSlot);
     void Use(const std::shared_ptr<DiceUtils::Dice> &dice,
-             const std::shared_ptr<EventSystem::BattleSystem> &currentBattle) {
+             EventSystem::BattleSystem &currentBattle) {
         if (m_RequireSlot.IsFit(dice->GetNum())) {
             m_RequireSlot.SetContainDice(dice, currentBattle);
         }

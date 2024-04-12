@@ -1,11 +1,11 @@
-#ifndef CARDS_VARIANT_SWORDCARD_HPP
-#define CARDS_VARIANT_SWORDCARD_HPP
+#ifndef CARDS_VARIANT_SMALLSHIELDCARD_HPP
+#define CARDS_VARIANT_SMALLSHIELDCARD_HPP
 
 #include "Cards/Card.hpp"
 namespace Cards::Variant {
-class SwordCard : public Cards::Card {
+class SmallShieldCard : public Cards::Card {
 public:
-    SwordCard();
+    SmallShieldCard();
     virtual void Use(EventSystem::BattleSystem &currentBattle) const override;
 };
 } // namespace Cards::Variant

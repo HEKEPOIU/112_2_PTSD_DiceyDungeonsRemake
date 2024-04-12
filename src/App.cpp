@@ -1,12 +1,11 @@
 #include "App.hpp"
 
-#include "Cards/Variant/SwordCard.hpp"
 #include "Character/Dices/Warrior.hpp"
-#include "ResourceConfig.hpp"
-#include "UI/CardsRenderer/CardRenderer.hpp"
+#include "Character/Enemys/Frog.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
 #include "Util/Logger.hpp"
+#include "Util/Time.hpp"
 #include <memory>
 
 void App::Start() {
@@ -15,25 +14,18 @@ void App::Start() {
     m_PlayerDice = std::make_shared<Character::Dices::Warrior>(
         "Thief", 1, 24, 24,
         RESOURCE_DIR "/graphics/characters/thief/static_1080.png");
-    m_TestEnemy = std::make_shared<Character::Enemy>(
-        "frog", 1, 12, 12, ENEMY_DIR + "/frog/static_1080.png");
+    m_TestEnemy = std::make_shared<Character::Enemys::Frog>();
 
     m_BattleSystem = std::make_shared<EventSystem::BattleSystem>(
         nullptr, m_PlayerDice, m_TestEnemy);
 
-    auto cardRenderTest = std::make_shared<UI::CardsRenderer::CardRenderer>(
-        std::make_shared<Cards::Variant::SwordCard>(1, 2));
-
     m_Root->AddChild(m_PlayerDice);
     m_Root->AddChild(m_TestEnemy);
     m_Root->AddChild(m_BattleSystem);
-    m_Root->AddChild(cardRenderTest);
     m_BattleSystem->EventStart();
 }
 
 void App::Update() {
-
-    // TODO: do your things here and delete this line <3
 
     /*
      * Do not touch the code below as they serve the purpose for
@@ -44,6 +36,8 @@ void App::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
+    // Display fps
+    // LOG_ERROR(fmt::format("{:.02f}", 1.0F / Util::Time::GetDeltaTime()));
 }
 
 void App::End() { // NOLINT(this method will mutate members in the future)

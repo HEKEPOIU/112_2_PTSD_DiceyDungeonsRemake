@@ -7,11 +7,16 @@ set(SRC_FILES
     Character/Enemy.cpp
     Character/PlayerDice.cpp
     Character/Dices/Warrior.cpp
+    Character/Enemys/Frog.cpp
     EventSystem/BaseEventSystem.cpp
     Cards/CardSystem.cpp
     Cards/Card.cpp
     Cards/Variant/SwordCard.cpp
+    Cards/Variant/BroadSwordCard.cpp
+    Cards/Variant/SmallShieldCard.cpp
     Cards/RequireVariant/NoneRequire.cpp
+    Cards/RequireVariant/ContainedDiceRequire.cpp
+    Cards/RequireVariant/MaxRequire.cpp
     EventSystem/BattleSystem.cpp
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
@@ -31,13 +36,21 @@ set(INCLUDE_FILES
     Character/Enemy.hpp
     Character/PlayerDice.hpp
     Character/Dices/Warrior.hpp
+    Character/Enemys/Frog.hpp
     EventSystem/BaseEventSystem.hpp
+    EventSystem/BattleSystem.hpp
+    EventSystem/EffectSystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
     Cards/Variant/SwordCard.hpp
+    Cards/Variant/BroadSwordCard.hpp
+    Cards/Variant/SmallShieldCard.hpp
     Cards/RequireVariant/NoneRequire.hpp
+    Cards/RequireVariant/ContainedDiceRequire.hpp
+    Cards/RequireVariant/MaxRequire.hpp
     Cards/CardRequireSlot.hpp
-    EventSystem/BattleSystem.hpp
+    Cards/CardRegister.hpp
+    Cards/CardFactory.hpp
     DiceUtils/Dice.hpp
     AI/EnemyAI.hpp
     Player/PlayerBattleInput.hpp

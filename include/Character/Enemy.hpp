@@ -7,16 +7,17 @@
 namespace Character {
 class Enemy : public BaseCharacter {
 public:
-    Enemy(const std::string &name, int level, int maxHp, int currentHp,
-          const std::string &path);
+    Enemy(const std::string &name, int initDiceCount, int level, int maxHp,
+          int currentHp, const std::string &path);
 
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
     virtual void RoundUpdate(EventSystem::BattleSystem &currentBattle) override;
     virtual void RoundEnd(EventSystem::BattleSystem &currentBattle) override;
     virtual void SetBattlePosition() override;
 
-private:
+protected:
     std::unique_ptr<AI::EnemyAI> m_AIBrain{};
+    int diceCount;
 };
 } // namespace Character
 

@@ -1,15 +1,21 @@
 #include "Character/Enemy.hpp"
 #include "Character/BaseCharacter.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include "Util/Logger.hpp"
 
 namespace Character {
 
-Enemy::Enemy(const std::string &name, int level, int maxHp, int currentHp,
-             const std::string &path)
-    : BaseCharacter(name, level, maxHp, currentHp, path) {}
+Enemy::Enemy(const std::string &name, int initDiceCount, int level, int maxHp,
+             int currentHp, const std::string &path)
+    : BaseCharacter(name, level, maxHp, currentHp, path),
+      diceCount(initDiceCount) {}
 
-void Enemy::RoundStart(EventSystem::BattleSystem &currentBattle){
-
+void Enemy::RoundStart(EventSystem::BattleSystem &currentBattle) {
+    BaseCharacter::RoundStart(currentBattle);
+    for (int i = 0; i < diceCount; i++) {
+        LOG_ERROR("Enemy Roll Dice");
+        currentBattle.RollDice();
+    }
 };
 void Enemy::RoundUpdate(EventSystem::BattleSystem &currentBattle){
 

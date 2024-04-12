@@ -4,7 +4,8 @@
 namespace UI::CardsRenderer {
 
 CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
-    : m_Size(card->GetSize()) {
+    : m_Size(card->GetSize()),
+      m_Card(card) {
     if (m_ImageMap.empty()) {
         InitImageMap();
     }
@@ -15,7 +16,14 @@ CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
     // above link is impl detail, but it seem complicated to impl on pure opengl
     // and sdl2.
     SetUpTransform(card);
+    auto onCardUsedFunction = std::bind(&CardRenderer::OnCardUsed, this);
+    card->BindOnCardUsedEvent("OnCardUsedUI", onCardUsedFunction);
 }
+
+CardRenderer::~CardRenderer() {
+    m_Card->UnBindOnCardUsedEvent("OnCardUsedUI");
+}
+
 void CardRenderer::InitImageMap() {
     m_ImageMap = {
         {Cards::CardColor::RED,
@@ -65,6 +73,9 @@ void CardRenderer::SetUpTransform(const std::shared_ptr<Cards::Card> &card) {
     for (auto slot : cardSlot) {
         auto slotRenderer = slot->GetRenderer();
         slotRenderer->SetZIndex(GetZIndex() + 1);
+        for (auto slotChild : slotRenderer->GetChildren()) {
+            slotChild->SetZIndex(GetZIndex() + 2);
+        }
         slotRenderer->m_Transform.scale = {.5, .5};
         m_SlotObjects.push_back(slotRenderer);
         AddChild(slotRenderer);
@@ -95,18 +106,29 @@ void CardRenderer::SetTranslate(const glm::vec2 &translate) {
           // out of {}, and ignore outside switch.
             int slotNum = m_SlotObjects.size();
             auto slotSize =
-                m_SlotObjects[1]
+                m_SlotObjects[0]
                     ->GetScaledSize(); // we thing slot are same size.
             auto cardCenter = translate + m_SlotOffset[1];
             switch (slotNum) {
             case 1:
                 m_SlotObjects[0]->m_Transform.translation = cardCenter;
+                for (auto child : m_SlotObjects[0]->GetChildren()) {
+                    child->m_Transform.translation = cardCenter;
+                }
                 break;
             case 2:
                 m_SlotObjects[0]->m_Transform.translation =
                     cardCenter - glm::vec2(10 + slotSize.x / 2, 0);
                 m_SlotObjects[1]->m_Transform.translation =
                     cardCenter + glm::vec2(10 + slotSize.x / 2, 0);
+                for (auto child : m_SlotObjects[1]->GetChildren()) {
+                    child->m_Transform.translation =
+                        cardCenter + glm::vec2(10 + slotSize.x / 2, 0);
+                }
+                for (auto child : m_SlotObjects[0]->GetChildren()) {
+                    child->m_Transform.translation =
+                        cardCenter + glm::vec2(10 + slotSize.x / 2, 0);
+                }
                 break;
             default:
                 throw std::runtime_error("Not Implemented 2 slot Above");
@@ -121,9 +143,16 @@ void CardRenderer::SetTranslate(const glm::vec2 &translate) {
             translate + m_DescriptionOffset[0];
         for (auto slotObj : m_SlotObjects) {
             slotObj->m_Transform.translation = translate + m_SlotOffset[0];
+            for (auto child : slotObj->GetChildren()) {
+                child->m_Transform.translation = translate + m_SlotOffset[0];
+            }
         }
         break;
     }
+}
+
+void CardRenderer::OnCardUsed() {
+    SetCardVisible(false);
 }
 
 std::unordered_map<Cards::CardColor, std::shared_ptr<Util::Image>>

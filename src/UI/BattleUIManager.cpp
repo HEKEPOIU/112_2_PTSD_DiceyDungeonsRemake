@@ -2,11 +2,15 @@
 #include "EventSystem/BattleSystem.hpp"
 #include "UI/Utils/Slider.hpp"
 #include "Util/Color.hpp"
+#include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Logger.hpp"
+#include "Util/SpriteSheet.hpp"
+#include <cstddef>
 #include <functional>
 #include <glm/fwd.hpp>
 #include <memory>
+#include <vector>
 
 namespace UI {
 BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
@@ -15,19 +19,9 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     // TODO: This should be dependency injected base on context.
     SetDrawable(std::make_shared<Util::Image>(
         RESOURCE_DIR "/graphics/backgrounds/combat/castle/static_1080.png"));
-    auto currentHpBoundFunction =
-        std::bind(&BattleUIManager::OnCurrentHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
-    auto maxHpBoundFunction =
-        std::bind(&BattleUIManager::OnMaxHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
-
-    m_CurrentBattle.GetPlayer().first->BindOnCurrentHealthChange(
-        "PlayerHealthChanged", currentHpBoundFunction);
-    m_CurrentBattle.GetPlayer().first->BindOnMaxHealthChange(
-        "PlayerMaxHealthChanged", maxHpBoundFunction);
-
     LOG_ERROR("zindex of background is {}", GetZIndex());
+
+    BindEvents();
     SetZIndex(-1);
     m_PlayerHpBar = std::make_shared<Utils::Slider>(
         RESOURCE_DIR "/graphics/pack1.png", RESOURCE_DIR "/graphics/pack1.png",
@@ -38,27 +32,54 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
         currentBattle.GetEnemy().first->GetCurrentHealth(), 0,
         currentBattle.GetEnemy().first->GetMaxHealth(), GetZIndex() + 1);
 
+    SetupEndTurnBtn();
+
     SetBattleBarInform(m_PlayerHpBar,
                        currentBattle.GetPlayer().first->GetName(), {-475, -350},
                        {.5, .5});
     SetBattleBarInform(m_EnemyHpBar, currentBattle.GetEnemy().first->GetName(),
                        {475, 400}, {.5, .5});
+
+    SetCardRenderer(m_PlayerCardRenderers,
+                    currentBattle.GetPlayer().first->GetCardMap());
+    SetCardRenderer(m_EnemyCardRenderers,
+                    currentBattle.GetEnemy().first->GetCardMap());
+
+    for (auto cardRender : m_PlayerCardRenderers) {
+        AddChild(cardRender);
+    }
+    for (auto cardRender : m_EnemyCardRenderers) {
+        AddChild(cardRender);
+        cardRender->SetCardVisible(false);
+    }
 }
 BattleUIManager::~BattleUIManager() {
     m_CurrentBattle.GetPlayer().first->UnBindOnCurrentHealthChange(
         "PlayerHealthChanged");
     m_CurrentBattle.GetPlayer().first->UnBindOnMaxHealthChange(
         "PlayerMaxHealthChanged");
+
+    m_CurrentBattle.GetEnemy().first->UnBindOnCurrentHealthChange(
+        "EnemyHealthChanged");
+    m_CurrentBattle.GetEnemy().first->UnBindOnMaxHealthChange(
+        "EnemyMaxHealthChanged");
 }
 
-void BattleUIManager::OnCurrentHealthChange(int oldHealth, int newHealth) {
-    LOG_ERROR("CurrentHealthChanged from {} to {}", oldHealth, newHealth);
+void BattleUIManager::OnPlayerCurrentHealthChange(int oldHealth,
+                                                  int newHealth) {
     m_PlayerHpBar->SetCurrentValue(newHealth);
 }
 
-void BattleUIManager::OnMaxHealthChange(int oldHealth, int newHealth) {
-    LOG_ERROR("MaxHealthChanged from {} to {}", oldHealth, newHealth);
+void BattleUIManager::OnPlayerMaxHealthChange(int oldHealth, int newHealth) {
     m_PlayerHpBar->SetMaxValue(newHealth);
+}
+
+void BattleUIManager::OnEnemyCurrentHealthChange(int oldHealth, int newHealth) {
+    m_EnemyHpBar->SetCurrentValue(newHealth);
+}
+
+void BattleUIManager::OnEnemyMaxHealthChange(int oldHealth, int newHealth) {
+    m_EnemyHpBar->SetMaxValue(newHealth);
 }
 
 void BattleUIManager::SetBattleBarInform(
@@ -85,6 +106,150 @@ void BattleUIManager::SetBattleBarInform(
     AddChild(nameObj);
 }
 
-void BattleUIManager::Update() {}
+void BattleUIManager::Update() {
+    auto currentStatus = m_CurrentBattle.GetCurrentStatus();
+
+    switch (currentStatus) {
+    case EventSystem::BattleStatus::PLAYERTURN:
+        for (auto cardRenderer : m_PlayerCardRenderers) {
+            for (auto playerDice : m_CurrentBattle.GetPlayer().second) {
+                cardRenderer->Use(playerDice, m_CurrentBattle);
+            }
+        }
+        break;
+    case EventSystem::BattleStatus::ENEMYTURN:
+        for (auto cardRenderer : m_EnemyCardRenderers) {
+            for (auto enemyDice : m_CurrentBattle.GetEnemy().second) {
+                cardRenderer->Use(enemyDice, m_CurrentBattle);
+            }
+        }
+        break;
+    }
+}
+
+void BattleUIManager::OnChangeStatus(EventSystem::BattleStatus oldStatus,
+                                     EventSystem::BattleStatus newStatus) {
+    switch (newStatus) {
+    case EventSystem::BattleStatus::PLAYERTURN:
+        SetEnemyUIVisible(false);
+        SetPlayerUIVisible(true);
+        break;
+    case EventSystem::BattleStatus::ENEMYTURN:
+        SetPlayerUIVisible(false);
+        SetEnemyUIVisible(true);
+        break;
+    }
+}
+
+void BattleUIManager::SetPlayerUIVisible(bool visible) {
+    m_EndTurnBtnIcon->SetVisible(visible);
+    m_EndTurnBtnText->SetVisible(visible);
+    for (auto cardRenderer : m_PlayerCardRenderers) {
+        cardRenderer->SetCardVisible(visible);
+    }
+}
+
+void BattleUIManager::SetEnemyUIVisible(bool visible) {
+    for (auto cardRenderer : m_EnemyCardRenderers) {
+        cardRenderer->SetCardVisible(visible);
+    }
+}
+
+void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
+    if (m_EndTurnBtnIcon->IsOnTop(pos) || m_EndTurnBtnText->IsOnTop(pos)) {
+        LOG_ERROR("ChangeStatus");
+        m_CurrentBattle.ChangeStates();
+    }
+}
+
+void BattleUIManager::BindEvents() {
+    auto playerCurrentHpBoundFunction =
+        std::bind(&BattleUIManager::OnPlayerCurrentHealthChange, this,
+                  std::placeholders::_1, std::placeholders::_2);
+    auto playerMaxHpBoundFunction =
+        std::bind(&BattleUIManager::OnPlayerMaxHealthChange, this,
+                  std::placeholders::_1, std::placeholders::_2);
+
+    auto enemyCurrentHpBoundFunction =
+        std::bind(&BattleUIManager::OnEnemyCurrentHealthChange, this,
+                  std::placeholders::_1, std::placeholders::_2);
+    auto enemyMaxHpBoundFunction =
+        std::bind(&BattleUIManager::OnEnemyMaxHealthChange, this,
+                  std::placeholders::_1, std::placeholders::_2);
+
+    m_CurrentBattle.GetPlayer().first->BindOnCurrentHealthChange(
+        "PlayerHealthChanged", playerCurrentHpBoundFunction);
+    m_CurrentBattle.GetPlayer().first->BindOnMaxHealthChange(
+        "PlayerMaxHealthChanged", playerMaxHpBoundFunction);
+
+    m_CurrentBattle.GetEnemy().first->BindOnCurrentHealthChange(
+        "EnemyHealthChanged", enemyCurrentHpBoundFunction);
+    m_CurrentBattle.GetEnemy().first->BindOnMaxHealthChange(
+        "EnemyMaxHealthChanged", enemyMaxHpBoundFunction);
+}
+
+void BattleUIManager::SetCardRenderer(
+    std::vector<std::shared_ptr<CardsRenderer::CardRenderer>> &cardRenderers,
+    const std::vector<std::vector<std::shared_ptr<Cards::Card>>> &cardMap) {
+    int xSpace = 50;
+    int ySpace = 30;
+    int columns = 0;
+    bool isNewColumns = false;
+    glm::ivec2 cardSize1 = {0, 0};
+    std::vector<glm::ivec2> cardPos;
+    for (size_t x = 0; x < cardMap.size(); x++) {
+        isNewColumns = false;
+        for (size_t y = 0; y < cardMap[0].size(); y++) {
+            if (cardMap[x][y] != nullptr) {
+                if (isNewColumns == false) {
+                    columns++;
+                    isNewColumns = true;
+                }
+                auto newCard = std::make_shared<CardsRenderer::CardRenderer>(
+                    cardMap[x][y]);
+                int cardSize = cardMap[x][y]->GetSize();
+                cardRenderers.push_back(newCard);
+                cardPos.push_back({x, y});
+                if (cardSize == 2) {
+                    y++;
+                } else if (cardSize == 1) {
+                    cardSize1 = newCard->GetScaledSize();
+                }
+            }
+        }
+    }
+    int cardXDistance = (cardSize1.x + xSpace);
+    int width = (columns - 1) * cardXDistance;
+    int startXPos = -(width / 2);
+
+    int CardYDistance = (cardSize1.y + ySpace);
+    int startYPos = CardYDistance / 2;
+
+    for (size_t i = 0; i < cardPos.size(); i++) {
+        int xPos = startXPos + cardPos[i].x * cardXDistance;
+        int yPos = cardRenderers[i]->GetSize() == 2
+                       ? 0
+                       : startYPos - cardPos[i].y * CardYDistance;
+        cardRenderers[i]->SetTranslate({xPos, yPos});
+    }
+}
+
+void BattleUIManager::SetupEndTurnBtn() {
+    m_EndTurnBtnIcon = std::make_shared<Util::GameObject>();
+    m_EndTurnBtnText = std::make_shared<Util::GameObject>();
+    auto endTurnSprite =
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png");
+    endTurnSprite->SetDrawRect({1863, 219, 161, 219});
+    m_EndTurnBtnIcon->SetDrawable(endTurnSprite);
+    m_EndTurnBtnText->SetDrawable(
+        std::make_shared<Util::Text>(RESOURCE_DIR "/NotoSans-Bold.ttf", 30,
+                                     "END TURN", Util::Color(255, 255, 255)));
+    m_EndTurnBtnIcon->m_Transform.translation = {860, -400};
+    m_EndTurnBtnIcon->m_Transform.scale = {0.5, 0.5};
+    m_EndTurnBtnText->m_Transform.translation = {860, -465};
+
+    AddChild(m_EndTurnBtnIcon);
+    AddChild(m_EndTurnBtnText);
+}
 
 } // namespace UI

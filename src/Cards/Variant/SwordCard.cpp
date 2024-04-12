@@ -5,26 +5,36 @@
 #include <memory>
 
 namespace Cards::Variant {
-SwordCard::SwordCard(int id, int size)
-    : Card(id, size) {
+SwordCard::SwordCard()
+    : Card(1, 2) {
     m_CardDescription = "Do [ ] damage";
     m_CardName = "SWORD";
     m_Color = Cards::CardColor::RED;
     AddRequireSlot(std::make_shared<RequireVariant::NoneRequire>(*this));
-    AddRequireSlot(std::make_shared<RequireVariant::NoneRequire>(*this));
 }
-void SwordCard::Use(
-    const std::shared_ptr<EventSystem::BattleSystem> &currentBattle) const {
-    switch (currentBattle->GetCurrentStatus()) {
+void SwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
+    Card::Use(currentBattle);
 
-    case EventSystem::BattleSystem::CurrentStatus::PLAYERTURN:
-        currentBattle->GetEnemy().first->ModifyCurrentHealth(
-            -(m_CardRequireSlot[0]->GetContainDiceNum()));
-        break;
-    case EventSystem::BattleSystem::CurrentStatus::ENEMYTURN:
-        currentBattle->GetPlayer().first->ModifyCurrentHealth(
-            -(m_CardRequireSlot[0]->GetContainDiceNum()));
-        break;
+    // I Think this weird.
+    currentBattle.UseCard([this](EventSystem::BattleSystem &currentBattle) {
+        switch (currentBattle.GetCurrentStatus()) {
+
+        case EventSystem::BattleStatus::PLAYERTURN:
+            currentBattle.ApplyDamage(
+                currentBattle.GetEnemy().first,
+                (m_CardRequireSlot[0]->GetContainDiceNum()));
+            break;
+        case EventSystem::BattleStatus::ENEMYTURN:
+            currentBattle.ApplyDamage(
+                currentBattle.GetPlayer().first,
+                (m_CardRequireSlot[0]->GetContainDiceNum()));
+            break;
+        }
+    });
+    currentBattle.RemoveDice(m_CardRequireSlot[0]->GetContainDice());
+    for (auto event : m_OnCardUsed) {
+        event.second();
     }
+    // event On Card Used.
 }
 } // namespace Cards::Variant

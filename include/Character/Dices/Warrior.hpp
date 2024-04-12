@@ -8,8 +8,7 @@ namespace Dices {
 class Warrior : public PlayerDice {
 public:
     Warrior(const std::string &name, int level, int maxHp, int currentHp,
-            const std::string &path)
-        : PlayerDice(name, level, maxHp, currentHp, path){};
+            const std::string &path);
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
 
 private:

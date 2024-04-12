@@ -3,6 +3,7 @@
 
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
+#include "Util/SpriteSheet.hpp"
 #include <array>
 #include <glm/fwd.hpp>
 #include <memory>
@@ -22,7 +23,7 @@ public:
 
 private:
     void InitImage();
-    static std::array<std::shared_ptr<Util::Image>, 6> image;
+    static std::array<std::shared_ptr<Util::SpriteSheet>, 6> image;
     unsigned short m_DiceNumber;
     DiceStates currentState = DiceStates::NORMAL;
 };

@@ -1,6 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "Cards/CardRegister.hpp"
 #include "Character/Dices/Warrior.hpp"
 #include "Character/Enemy.hpp"
 #include "EventSystem/BattleSystem.hpp"
@@ -33,6 +34,8 @@ private:
     std::shared_ptr<Character::Enemy> m_TestEnemy;
     std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
     std::unique_ptr<Util::Renderer> m_Root = std::make_unique<Util::Renderer>();
+    std::unique_ptr<Cards::CardRegister> m_CardRegister =
+        std::make_unique<Cards::CardRegister>();
 };
 
 #endif

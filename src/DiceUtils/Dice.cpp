@@ -1,5 +1,6 @@
 #include "DiceUtils/Dice.hpp"
 #include "Util/Image.hpp"
+#include "Util/SpriteSheet.hpp"
 #include <glm/fwd.hpp>
 #include <memory>
 #include <stdexcept>
@@ -9,7 +10,7 @@ namespace DiceUtils {
 Dice::Dice(unsigned short diceNum)
     : m_DiceNumber(diceNum) {
     SetNum(diceNum);
-    m_Transform.scale = {.6, .6};
+    m_Transform.scale = {.5, .5};
 }
 
 void Dice::SetNum(unsigned short diceNum) {
@@ -26,12 +27,19 @@ void Dice::SetNum(unsigned short diceNum) {
 
 void Dice::InitImage() {
     image = {
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_1.png"),
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_2.png"),
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_3.png"),
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_4.png"),
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_5.png"),
-        std::make_shared<Util::Image>(RESOURCE_DIR "/RollDice/Dice_6.png")};
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png"),
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png"),
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png"),
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png"),
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR "/graphics/pack1.png"),
+        std::make_shared<Util::SpriteSheet>(RESOURCE_DIR
+                                            "/graphics/pack1.png")};
+    image[0]->SetDrawRect({894, 945, 249, 249});
+    image[1]->SetDrawRect({291, 1145, 249, 249});
+    image[2]->SetDrawRect({540, 1194, 249, 249});
+    image[3]->SetDrawRect({789, 1194, 249, 249});
+    image[4]->SetDrawRect({319, 1618, 249, 249});
+    image[5]->SetDrawRect({569, 1603, 249, 249});
 }
-std::array<std::shared_ptr<Util::Image>, 6> Dice::image{};
+std::array<std::shared_ptr<Util::SpriteSheet>, 6> Dice::image{};
 } // namespace DiceUtils

@@ -1,6 +1,7 @@
 #ifndef CHARACTER_BASECHARACTER_HPP
 #define CHARACTER_BASECHARACTER_HPP
 
+#include "Cards/Card.hpp"
 #include "Cards/CardSystem.hpp"
 #include "Character/HealthSystem.hpp"
 #include "Util/GameObject.hpp"
@@ -42,6 +43,10 @@ public:
         m_HealthSystem->SetCurrentHealth(value);
     };
     void SetMaxHealth(int value) { m_HealthSystem->SetMaxHealth(value); };
+
+    const std::vector<std::vector<std::shared_ptr<Cards::Card>>> &GetCardMap() {
+        return m_BattleCards->GetCardMap();
+    }
 
 protected:
     std::string m_Name;
