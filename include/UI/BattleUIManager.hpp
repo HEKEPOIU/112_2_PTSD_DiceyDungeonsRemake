@@ -1,12 +1,13 @@
 #ifndef UI_BATTLEUIMANAGER_HPP
 #define UI_BATTLEUIMANAGER_HPP
 
+#include "EventSystem/EffectSystem.hpp"
 #include "UI/CardsRenderer/CardRenderer.hpp"
+#include "UI/Utils/EffectBar.hpp"
 #include "UI/Utils/Slider.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Text.hpp"
 #include <memory>
-#include <string>
 #include <vector>
 
 namespace EventSystem {
@@ -26,11 +27,17 @@ public:
     void OnChangeStatus(EventSystem::BattleStatus oldStatus,
                         EventSystem::BattleStatus newStatus);
 
+    //  It Should not do this But I don't think batter way.
+    std::vector<std::shared_ptr<CardsRenderer::CardRenderer>> &
+    GetEnemyCardRenderer() {
+        return m_EnemyCardRenderers;
+    }
+
 private:
-    void OnPlayerCurrentHealthChange(int oldHealth, int newHealth);
-    void OnPlayerMaxHealthChange(int oldHealth, int newHealth);
-    void OnEnemyCurrentHealthChange(int oldHealth, int newHealth);
-    void OnEnemyMaxHealthChange(int oldHealth, int newHealth);
+    void OnPlayerEffectChange(EventSystem::EffectSystem::BattleEffect effect,
+                              int oldValue, int newValue);
+    void OnEnemyEffectChange(EventSystem::EffectSystem::BattleEffect effect,
+                             int oldValue, int newValue);
     void SetBattleBarInform(const std::shared_ptr<Utils::Slider> &bar,
                             const std::string &name, const glm::vec2 &pos,
                             const glm::vec2 &scale);
@@ -52,6 +59,10 @@ private:
     std::shared_ptr<Util::Text> m_EnemyName;
     std::shared_ptr<Util::GameObject> m_EndTurnBtnIcon;
     std::shared_ptr<Util::GameObject> m_EndTurnBtnText;
+    std::shared_ptr<Utils::EffectBar> m_EnemyEffectBar =
+        std::make_shared<Utils::EffectBar>();
+    std::shared_ptr<Utils::EffectBar> m_PlayerEffectBar =
+        std::make_shared<Utils::EffectBar>();
     std::vector<std::shared_ptr<CardsRenderer::CardRenderer>>
         m_PlayerCardRenderers;
     std::vector<std::shared_ptr<CardsRenderer::CardRenderer>>

@@ -13,7 +13,9 @@ SwordCard::SwordCard()
     AddRequireSlot(std::make_shared<RequireVariant::NoneRequire>(*this));
 }
 void SwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
-    Card::Use(currentBattle);
+    if (!IsFit()) {
+        return;
+    }
 
     // I Think this weird.
     currentBattle.UseCard([this](EventSystem::BattleSystem &currentBattle) {

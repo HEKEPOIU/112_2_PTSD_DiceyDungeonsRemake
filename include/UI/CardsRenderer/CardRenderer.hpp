@@ -2,9 +2,11 @@
 #define UI_CARDSRENDERER_CARDRENDERER_HPP
 
 #include "Cards/Card.hpp"
+#include "DiceUtils/Dice.hpp"
 #include "UI/CardsRenderer/RequireSlotRenderer.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
+#include <cstddef>
 #include <glm/fwd.hpp>
 #include <memory>
 #include <unordered_map>
@@ -24,6 +26,7 @@ public:
         for (auto slotRender : m_SlotObjects) {
             if (slotRender->IsOnTop(dice->GetTransform().translation)) {
                 slotRender->Use(dice, currentBattle);
+
                 break;
             }
         }
@@ -42,6 +45,16 @@ public:
     }
 
     int GetSize() const { return m_Size; }
+
+    const std::shared_ptr<UI::CardsRenderer::RequireSlotRenderer>
+    GetFitSlot(const std::shared_ptr<DiceUtils::Dice> &dice) {
+        for (size_t i = 0; i < m_SlotObjects.size(); i++) {
+            if (m_SlotObjects[i]->IsFit(dice)) {
+                return m_SlotObjects[i];
+            }
+        }
+        return {nullptr};
+    }
 
 private:
     void InitImageMap();

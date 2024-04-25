@@ -44,13 +44,24 @@ public:
     void DetectUiClick(const glm::vec2 &pos);
     void ApplyDamage(std::shared_ptr<Character::BaseCharacter> target,
                      int damage);
-    void ApplyShield(std::shared_ptr<Character::BaseCharacter> target,
+    void ApplyEffect(std::shared_ptr<Character::BaseCharacter> target,
+                     EventSystem::EffectSystem::BattleEffect effect,
                      int shield);
 
     void UseCard(std::function<void(EventSystem::BattleSystem &)> func);
+    const std::unique_ptr<EffectSystem> &GetPlayerEffectSystem() {
+        return m_PlayerEffectSystem;
+    }
+    const std::unique_ptr<EffectSystem> &GetEnemyEffectSystem() {
+        return m_EnemyEffectSystem;
+    }
     virtual void EventStart() override;
     virtual void EventUpdate() override;
     virtual void EventEnd() override;
+    std::vector<std::shared_ptr<UI::CardsRenderer::CardRenderer>> &
+    GetEnemyCardRenderer() {
+        return m_UIManager->GetEnemyCardRenderer();
+    }
 
 private:
     std::pair<std::shared_ptr<Character::BaseCharacter>,
@@ -63,8 +74,9 @@ private:
         std::make_unique<EffectSystem>();
     std::unique_ptr<EffectSystem> m_EnemyEffectSystem =
         std::make_unique<EffectSystem>();
-    std::shared_ptr<Player::PlayerBattleInput> m_PlayerInput;
+
     std::shared_ptr<UI::BattleUIManager> m_UIManager;
+    std::shared_ptr<Player::PlayerBattleInput> m_PlayerInput;
     BattleStatus m_CurrentStates = BattleStatus::PLAYERTURN;
 };
 } // namespace EventSystem

@@ -20,9 +20,12 @@ set(SRC_FILES
     EventSystem/BattleSystem.cpp
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
+    AI/DumbAI.cpp
     Player/PlayerBattleInput.cpp
     UI/BattleUIManager.cpp
     UI/Utils/Slider.cpp
+    UI/Utils/EffectBar.cpp
+    UI/Utils/EffectIcon.cpp
     UI/CardsRenderer/CardRenderer.cpp
     UI/CardsRenderer/RequireSlotRenderer.cpp
 )
@@ -52,11 +55,14 @@ set(INCLUDE_FILES
     Cards/CardRegister.hpp
     Cards/CardFactory.hpp
     DiceUtils/Dice.hpp
+    AI/DumbAI.hpp
     AI/EnemyAI.hpp
     Player/PlayerBattleInput.hpp
     UI/BattleUIManager.hpp
     ResourceConfig.hpp
     UI/Utils/Slider.hpp
+    UI/Utils/EffectBar.hpp
+    UI/Utils/EffectIcon.hpp
     UI/CardsRenderer/CardRenderer.hpp
     UI/CardsRenderer/RequireSlotRenderer.hpp
 )

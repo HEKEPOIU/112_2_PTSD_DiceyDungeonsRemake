@@ -16,11 +16,12 @@ void Enemy::RoundStart(EventSystem::BattleSystem &currentBattle) {
         LOG_ERROR("Enemy Roll Dice");
         currentBattle.RollDice();
     }
+    m_AIBrain->RoundStart();
 };
-void Enemy::RoundUpdate(EventSystem::BattleSystem &currentBattle){
-
+void Enemy::RoundUpdate(EventSystem::BattleSystem &currentBattle) {
+    m_AIBrain->RoundUpdate(currentBattle);
 };
-void Enemy::RoundEnd(EventSystem::BattleSystem &currentBattle){
+void Enemy::RoundEnd(EventSystem::BattleSystem &currentBattle) {
 
 };
 void Enemy::SetBattlePosition() {

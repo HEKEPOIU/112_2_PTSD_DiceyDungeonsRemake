@@ -1,6 +1,7 @@
 #ifndef CHARACTER_ENEMY_HPP
 #define CHARACTER_ENEMY_HPP
 
+#include "AI/DumbAI.hpp"
 #include "AI/EnemyAI.hpp"
 #include "Character/BaseCharacter.hpp"
 #include <memory>
@@ -16,7 +17,7 @@ public:
     virtual void SetBattlePosition() override;
 
 protected:
-    std::unique_ptr<AI::EnemyAI> m_AIBrain{};
+    std::unique_ptr<AI::EnemyAI> m_AIBrain = std::make_unique<AI::DumbAI>();
     int diceCount;
 };
 } // namespace Character

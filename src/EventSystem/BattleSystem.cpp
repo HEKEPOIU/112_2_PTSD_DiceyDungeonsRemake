@@ -2,7 +2,6 @@
 #include "EventSystem/BaseEventSystem.hpp"
 #include "EventSystem/EffectSystem.hpp"
 #include "Player/PlayerBattleInput.hpp"
-#include "Util/Logger.hpp"
 #include <memory>
 #include <random>
 
@@ -23,7 +22,6 @@ void BattleSystem::EventStart() {
     m_Player.first->SetBattlePosition();
     m_Enemy.first->SetBattlePosition();
     m_Player.first->RoundStart(*this);
-    ApplyShield(m_Enemy.first, 2);
 }
 void BattleSystem::EventUpdate() {
     switch (m_CurrentStates) {
@@ -32,6 +30,7 @@ void BattleSystem::EventUpdate() {
         m_Player.first->RoundUpdate(*this);
         break;
     case (BattleStatus::ENEMYTURN):
+        m_Enemy.first->RoundUpdate(*this);
         break;
     }
 }
@@ -50,9 +49,10 @@ void BattleSystem::RollDice(unsigned short target) {
 }
 
 void BattleSystem::RemoveDice(const std::shared_ptr<DiceUtils::Dice> &dice) {
-    auto diceVector = m_CurrentStates == BattleStatus::PLAYERTURN
-                          ? m_Player.second
-                          : m_Enemy.second;
+    // We Can't use auto here because it will copy the value.
+    std::vector<std::shared_ptr<DiceUtils::Dice>> &diceVector =
+        m_CurrentStates == BattleStatus::PLAYERTURN ? m_Player.second
+                                                    : m_Enemy.second;
 
     auto removeIter = std::remove(diceVector.begin(), diceVector.end(), dice);
     if (removeIter != diceVector.end()) {
@@ -78,11 +78,15 @@ void BattleSystem::ChangeStates() {
         m_CurrentStates = BattleStatus::ENEMYTURN;
         m_Player.first->RoundEnd(*this);
         m_Enemy.first->RoundStart(*this);
+        m_EnemyEffectSystem->EffectUpdate();
+        m_PlayerEffectSystem->EffectUpdate();
         break;
     case (BattleStatus::ENEMYTURN):
         m_CurrentStates = BattleStatus::PLAYERTURN;
         m_Enemy.first->RoundEnd(*this);
         m_Player.first->RoundStart(*this);
+        m_EnemyEffectSystem->EffectUpdate();
+        m_PlayerEffectSystem->EffectUpdate();
         break;
     }
 
@@ -117,18 +121,18 @@ void BattleSystem::ApplyDamage(std::shared_ptr<Character::BaseCharacter> target,
         target == m_Player.first ? m_PlayerEffectSystem : m_EnemyEffectSystem;
     int shieldAmount =
         effectSystem->GetEffectAmount(EffectSystem::BattleEffect::SHIELD);
-    effectSystem->RemoveEffectAmount(EffectSystem::BattleEffect::SHIELD,
-                                     damage);
-
+    effectSystem->ApplyEffect(EffectSystem::BattleEffect::SHIELD, -damage);
     damage = glm::max(damage - shieldAmount, 0);
+
     target->ModifyCurrentHealth(-damage);
 }
 
-void BattleSystem::ApplyShield(std::shared_ptr<Character::BaseCharacter> target,
+void BattleSystem::ApplyEffect(std::shared_ptr<Character::BaseCharacter> target,
+                               EventSystem::EffectSystem::BattleEffect effect,
                                int shield) {
     std::unique_ptr<EffectSystem> &effectSystem =
         target == m_Player.first ? m_PlayerEffectSystem : m_EnemyEffectSystem;
-    effectSystem->ApplyEffect(EffectSystem::BattleEffect::SHIELD, shield);
+    effectSystem->ApplyEffect(effect, shield);
 }
 
 void BattleSystem::UseCard(

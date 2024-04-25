@@ -16,18 +16,21 @@ BroadSwordCard::BroadSwordCard()
         std::make_shared<RequireVariant::ContainedDiceRequire>(*this, 2));
 }
 void BroadSwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
-    Card::Use(currentBattle);
-
+    if (!IsFit()) {
+        return;
+    }
     currentBattle.UseCard([this](EventSystem::BattleSystem &currentBattle) {
         switch (currentBattle.GetCurrentStatus()) {
 
         case EventSystem::BattleStatus::PLAYERTURN:
-            currentBattle.GetEnemy().first->ModifyCurrentHealth(
+            currentBattle.ApplyDamage(
+                currentBattle.GetEnemy().first,
                 (m_CardRequireSlot[0]->GetContainDiceNum() +
                  m_CardRequireSlot[1]->GetContainDiceNum()));
             break;
         case EventSystem::BattleStatus::ENEMYTURN:
-            currentBattle.GetPlayer().first->ModifyCurrentHealth(
+            currentBattle.ApplyDamage(
+                currentBattle.GetPlayer().first,
                 (m_CardRequireSlot[0]->GetContainDiceNum() +
                  m_CardRequireSlot[1]->GetContainDiceNum()));
             break;

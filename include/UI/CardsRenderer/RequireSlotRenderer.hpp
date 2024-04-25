@@ -19,11 +19,14 @@ public:
     RequireSlotRenderer(Cards::CardRequireSlot &requireSlot);
     void Use(const std::shared_ptr<DiceUtils::Dice> &dice,
              EventSystem::BattleSystem &currentBattle) {
-        if (m_RequireSlot.IsFit(dice->GetNum())) {
+        if (IsFit(dice)) {
             m_RequireSlot.SetContainDice(dice, currentBattle);
         }
     }
 
+    bool IsFit(const std::shared_ptr<DiceUtils::Dice> &dice) {
+        return m_RequireSlot.IsFit(dice->GetNum());
+    }
     void Reset() { m_RequireSlot.Reset(); }
 
 private:

@@ -25,11 +25,7 @@ public:
     GetRequireSlot() const {
         return m_CardRequireSlot;
     }
-    virtual void Use(EventSystem::BattleSystem &currentBattle) const {
-        if (!IsFit()) {
-            return;
-        }
-    };
+    virtual void Use(EventSystem::BattleSystem &currentBattle) const = 0;
 
     bool IsFit() const;
 

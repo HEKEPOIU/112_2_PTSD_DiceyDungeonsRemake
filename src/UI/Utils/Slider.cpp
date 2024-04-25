@@ -1,6 +1,5 @@
 #include "UI/Utils/Slider.hpp"
 #include "Util/GameObject.hpp"
-#include "Util/Logger.hpp"
 #include "Util/SpriteSheet.hpp"
 #include <glm/common.hpp>
 #include <memory>
@@ -47,7 +46,9 @@ void Slider::SetCurrentValue(int value) {
     auto currentDrawRect = m_FillImageSpriteSheet->GetCurrentDrawRect();
     auto newFillPos = fillObject->m_Transform.translation;
 
-    int fillWidth = (float)m_CurrentValue / m_MaxValue * m_MaxFillRect.h;
+    // TODO: something weird
+    int fillWidth = (float)(m_CurrentValue - m_MinValue) /
+                    (m_MaxValue - m_MinValue) * m_MaxFillRect.h;
 
     newFillPos.x = (m_SliderPos.x - (m_MaxFillRect.h - fillWidth) / 4.);
 

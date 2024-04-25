@@ -1,5 +1,6 @@
 #include "UI/BattleUIManager.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include "UI/Utils/EffectBar.hpp"
 #include "UI/Utils/Slider.hpp"
 #include "Util/Color.hpp"
 #include "Util/GameObject.hpp"
@@ -32,6 +33,9 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
         currentBattle.GetEnemy().first->GetCurrentHealth(), 0,
         currentBattle.GetEnemy().first->GetMaxHealth(), GetZIndex() + 1);
 
+    AddChild(m_EnemyEffectBar);
+    AddChild(m_PlayerEffectBar);
+
     SetupEndTurnBtn();
 
     SetBattleBarInform(m_PlayerHpBar,
@@ -52,6 +56,8 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
         AddChild(cardRender);
         cardRender->SetCardVisible(false);
     }
+    m_EnemyEffectBar->SetPosition({475, 345});
+    m_PlayerEffectBar->SetPosition({-475, -455});
 }
 BattleUIManager::~BattleUIManager() {
     m_CurrentBattle.GetPlayer().first->UnBindOnCurrentHealthChange(
@@ -64,24 +70,6 @@ BattleUIManager::~BattleUIManager() {
     m_CurrentBattle.GetEnemy().first->UnBindOnMaxHealthChange(
         "EnemyMaxHealthChanged");
 }
-
-void BattleUIManager::OnPlayerCurrentHealthChange(int oldHealth,
-                                                  int newHealth) {
-    m_PlayerHpBar->SetCurrentValue(newHealth);
-}
-
-void BattleUIManager::OnPlayerMaxHealthChange(int oldHealth, int newHealth) {
-    m_PlayerHpBar->SetMaxValue(newHealth);
-}
-
-void BattleUIManager::OnEnemyCurrentHealthChange(int oldHealth, int newHealth) {
-    m_EnemyHpBar->SetCurrentValue(newHealth);
-}
-
-void BattleUIManager::OnEnemyMaxHealthChange(int oldHealth, int newHealth) {
-    m_EnemyHpBar->SetMaxValue(newHealth);
-}
-
 void BattleUIManager::SetBattleBarInform(
     const std::shared_ptr<Utils::Slider> &bar, const std::string &name,
     const glm::vec2 &pos, const glm::vec2 &scale) {
@@ -163,29 +151,36 @@ void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
 }
 
 void BattleUIManager::BindEvents() {
-    auto playerCurrentHpBoundFunction =
-        std::bind(&BattleUIManager::OnPlayerCurrentHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
-    auto playerMaxHpBoundFunction =
-        std::bind(&BattleUIManager::OnPlayerMaxHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
 
-    auto enemyCurrentHpBoundFunction =
-        std::bind(&BattleUIManager::OnEnemyCurrentHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
-    auto enemyMaxHpBoundFunction =
-        std::bind(&BattleUIManager::OnEnemyMaxHealthChange, this,
-                  std::placeholders::_1, std::placeholders::_2);
+    auto playerEffectChange = std::bind(
+        &Utils::EffectBar::ShowEffect, m_PlayerEffectBar, std::placeholders::_1,
+        std::placeholders::_2, std::placeholders::_3);
+    auto enemyEffectChange = std::bind(
+        &Utils::EffectBar::ShowEffect, m_EnemyEffectBar, std::placeholders::_1,
+        std::placeholders::_2, std::placeholders::_3);
 
     m_CurrentBattle.GetPlayer().first->BindOnCurrentHealthChange(
-        "PlayerHealthChanged", playerCurrentHpBoundFunction);
+        "PlayerHealthChanged", [this](int oldHealth, int newHealth) {
+            m_PlayerHpBar->SetCurrentValue(newHealth);
+        });
     m_CurrentBattle.GetPlayer().first->BindOnMaxHealthChange(
-        "PlayerMaxHealthChanged", playerMaxHpBoundFunction);
+        "PlayerMaxHealthChanged", [this](int oldHealth, int newHealth) {
+            m_PlayerHpBar->SetMaxValue(newHealth);
+        });
 
     m_CurrentBattle.GetEnemy().first->BindOnCurrentHealthChange(
-        "EnemyHealthChanged", enemyCurrentHpBoundFunction);
+        "EnemyHealthChanged", [this](int oldHealth, int newHealth) {
+            m_EnemyHpBar->SetCurrentValue(newHealth);
+        });
     m_CurrentBattle.GetEnemy().first->BindOnMaxHealthChange(
-        "EnemyMaxHealthChanged", enemyMaxHpBoundFunction);
+        "EnemyMaxHealthChanged", [this](int oldHealth, int newHealth) {
+            m_EnemyHpBar->SetMaxValue(newHealth);
+        });
+
+    m_CurrentBattle.GetPlayerEffectSystem()->BindOnEffectChange(
+        "UIChange", playerEffectChange);
+    m_CurrentBattle.GetEnemyEffectSystem()->BindOnEffectChange(
+        "UIChange", enemyEffectChange);
 }
 
 void BattleUIManager::SetCardRenderer(
