@@ -8,7 +8,7 @@ void DumbAI::RoundUpdate(EventSystem::BattleSystem &currentBattle) {
     // If no Card left, or no dice left, end the turn.
 
     if (currentBattle.GetEnemy().second.size() == 0) {
-        currentBattle.ChangeStates();
+        currentBattle.ChangeRound();
         return;
     }
     if (isWaiting) {
@@ -18,7 +18,7 @@ void DumbAI::RoundUpdate(EventSystem::BattleSystem &currentBattle) {
     auto card = GetAvailableCard(currentBattle);
 
     if (card.first == nullptr) {
-        currentBattle.ChangeStates();
+        currentBattle.ChangeRound();
         return;
     }
     LOG_ERROR("Find Card");

@@ -10,9 +10,15 @@
 #include <memory>
 #include <vector>
 namespace EventSystem {
-enum class BattleStatus {
+enum class BattleRounds {
     PLAYERTURN,
     ENEMYTURN,
+};
+
+enum class BattleStates {
+    START,
+    UPDATE,
+    END,
 };
 
 // I thing this class have too much responsibilities.
@@ -22,6 +28,7 @@ public:
     BattleSystem(std::shared_ptr<GameCore::MainGame> mainGame,
                  std::shared_ptr<Character::BaseCharacter> player,
                  std::shared_ptr<Character::BaseCharacter> target);
+    ~BattleSystem();
 
     std::pair<std::shared_ptr<Character::BaseCharacter>,
               std::vector<std::shared_ptr<DiceUtils::Dice>>> &
@@ -34,12 +41,14 @@ public:
         return m_Enemy;
     }
 
-    const BattleStatus &GetCurrentStatus() const { return m_CurrentStates; }
+    const BattleRounds &GetCurrentRound() const { return m_CurrentRound; }
+    const BattleStates &GetCurrentState() const { return m_CurrentState; }
 
     void RollDice(unsigned short target = 0);
     void RemoveDice(const std::shared_ptr<DiceUtils::Dice> &dice);
     void SetUpDice(const std::shared_ptr<DiceUtils::Dice> &dice);
-    void ChangeStates();
+    void ChangeRound();
+    void ChangeStatus(BattleStates state);
     void UseDice();
     void DetectUiClick(const glm::vec2 &pos);
     void ApplyDamage(std::shared_ptr<Character::BaseCharacter> target,
@@ -77,7 +86,8 @@ private:
 
     std::shared_ptr<UI::BattleUIManager> m_UIManager;
     std::shared_ptr<Player::PlayerBattleInput> m_PlayerInput;
-    BattleStatus m_CurrentStates = BattleStatus::PLAYERTURN;
+    BattleRounds m_CurrentRound = BattleRounds::PLAYERTURN;
+    BattleStates m_CurrentState = BattleStates::START;
 };
 } // namespace EventSystem
 

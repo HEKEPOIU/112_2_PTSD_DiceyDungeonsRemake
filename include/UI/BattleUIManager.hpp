@@ -12,7 +12,8 @@
 
 namespace EventSystem {
 class BattleSystem;
-enum class BattleStatus;
+enum class BattleRounds;
+enum class BattleStates;
 } // namespace EventSystem
 
 namespace UI {
@@ -24,8 +25,12 @@ public:
 
     void Update();
     void DetectUiClick(const glm::vec2 &pos);
-    void OnChangeStatus(EventSystem::BattleStatus oldStatus,
-                        EventSystem::BattleStatus newStatus);
+    void OnChangeRound(EventSystem::BattleRounds oldRound,
+                       EventSystem::BattleRounds newRound);
+
+    void ShowPlayerWinUI(int coin, int giveExp, int nextLevelExp,
+                         int currentExp);
+    void ShowEnemyWinUI();
 
     //  It Should not do this But I don't think batter way.
     std::vector<std::shared_ptr<CardsRenderer::CardRenderer>> &
@@ -59,6 +64,7 @@ private:
     std::shared_ptr<Util::Text> m_EnemyName;
     std::shared_ptr<Util::GameObject> m_EndTurnBtnIcon;
     std::shared_ptr<Util::GameObject> m_EndTurnBtnText;
+    std::shared_ptr<Util::GameObject> m_EndBattleBtn;
     std::shared_ptr<Utils::EffectBar> m_EnemyEffectBar =
         std::make_shared<Utils::EffectBar>();
     std::shared_ptr<Utils::EffectBar> m_PlayerEffectBar =

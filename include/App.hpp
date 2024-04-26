@@ -4,7 +4,9 @@
 #include "Cards/CardRegister.hpp"
 #include "Character/Dices/Warrior.hpp"
 #include "Character/Enemy.hpp"
+#include "Character/Enemys/EnemyRegister.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include "GameCore/MainGame.hpp"
 #include "Util/Renderer.hpp"
 #include "pch.hpp" // IWYU pragma: export
 #include <memory>
@@ -30,12 +32,15 @@ private:
 
 private:
     State m_CurrentState = State::START;
-    std::shared_ptr<Character::Dices::Warrior> m_PlayerDice;
-    std::shared_ptr<Character::Enemy> m_TestEnemy;
-    std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
+    // std::shared_ptr<Character::Dices::Warrior> m_PlayerDice;
+    // std::shared_ptr<Character::Enemy> m_TestEnemy;
+    // std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
+    std::shared_ptr<GameCore::MainGame> m_MainGame;
     std::unique_ptr<Util::Renderer> m_Root = std::make_unique<Util::Renderer>();
     std::unique_ptr<Cards::CardRegister> m_CardRegister =
         std::make_unique<Cards::CardRegister>();
+    std::unique_ptr<Character::Enemys::EnemyRegister> m_EnemyRegister =
+        std::make_unique<Character::Enemys::EnemyRegister>();
 };
 
 #endif

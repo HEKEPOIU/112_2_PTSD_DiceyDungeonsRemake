@@ -2,7 +2,6 @@
 #define EVENTSYSTEM_EFFECTSYSTEM_HPP
 
 #include <functional>
-#include <map>
 #include <string>
 #include <unordered_map>
 #include <vector>

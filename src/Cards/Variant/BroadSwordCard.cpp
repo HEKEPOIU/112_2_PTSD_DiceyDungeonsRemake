@@ -20,15 +20,15 @@ void BroadSwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
         return;
     }
     currentBattle.UseCard([this](EventSystem::BattleSystem &currentBattle) {
-        switch (currentBattle.GetCurrentStatus()) {
+        switch (currentBattle.GetCurrentRound()) {
 
-        case EventSystem::BattleStatus::PLAYERTURN:
+        case EventSystem::BattleRounds::PLAYERTURN:
             currentBattle.ApplyDamage(
                 currentBattle.GetEnemy().first,
                 (m_CardRequireSlot[0]->GetContainDiceNum() +
                  m_CardRequireSlot[1]->GetContainDiceNum()));
             break;
-        case EventSystem::BattleStatus::ENEMYTURN:
+        case EventSystem::BattleRounds::ENEMYTURN:
             currentBattle.ApplyDamage(
                 currentBattle.GetPlayer().first,
                 (m_CardRequireSlot[0]->GetContainDiceNum() +

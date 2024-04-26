@@ -16,6 +16,9 @@ public:
     virtual void RoundUpdate(EventSystem::BattleSystem &currentBattle) override;
     virtual void RoundEnd(EventSystem::BattleSystem &currentBattle) override;
     virtual void SetBattlePosition() override;
+    int GetCurrentLevelUpArr() { return m_LevelUpArr[m_Level - 1]; };
+    void SetExp(int newExp) { m_CurrentExp = newExp; };
+    int GetExp() { return m_CurrentExp; };
 
 protected:
     std::unique_ptr<Cards::CardSystem> m_BagCards =

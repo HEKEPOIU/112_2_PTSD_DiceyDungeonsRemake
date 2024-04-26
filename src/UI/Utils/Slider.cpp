@@ -46,11 +46,16 @@ void Slider::SetCurrentValue(int value) {
     auto currentDrawRect = m_FillImageSpriteSheet->GetCurrentDrawRect();
     auto newFillPos = fillObject->m_Transform.translation;
 
-    // TODO: something weird
-    int fillWidth = (float)(m_CurrentValue - m_MinValue) /
-                    (m_MaxValue - m_MinValue) * m_MaxFillRect.h;
+    int fillTotalWidth = fillObject->m_Transform.rotation == glm::radians(90.f)
+                             ? m_MaxFillRect.h
+                             : m_MaxFillRect.w;
 
-    newFillPos.x = (m_SliderPos.x - (m_MaxFillRect.h - fillWidth) / 4.);
+    // TODO: This /4 because the size is scale by /2
+    int fillWidth = (float)(m_CurrentValue - m_MinValue) /
+                    (m_MaxValue - m_MinValue) * fillTotalWidth;
+
+    newFillPos.x = (m_SliderPos.x -
+                    (m_MaxFillRect.h - fillWidth) / (2. / m_Transform.scale.x));
 
     currentDrawRect.h = fillWidth;
     fillObject->m_Transform.translation = newFillPos;

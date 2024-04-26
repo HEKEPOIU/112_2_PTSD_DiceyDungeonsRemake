@@ -7,6 +7,7 @@
 #include "Util/Image.hpp"
 #include "Util/Logger.hpp"
 #include "Util/SpriteSheet.hpp"
+#include "Util/Text.hpp"
 #include <cstddef>
 #include <functional>
 #include <glm/fwd.hpp>
@@ -95,17 +96,17 @@ void BattleUIManager::SetBattleBarInform(
 }
 
 void BattleUIManager::Update() {
-    auto currentStatus = m_CurrentBattle.GetCurrentStatus();
+    auto currentStatus = m_CurrentBattle.GetCurrentRound();
 
     switch (currentStatus) {
-    case EventSystem::BattleStatus::PLAYERTURN:
+    case EventSystem::BattleRounds::PLAYERTURN:
         for (auto cardRenderer : m_PlayerCardRenderers) {
             for (auto playerDice : m_CurrentBattle.GetPlayer().second) {
                 cardRenderer->Use(playerDice, m_CurrentBattle);
             }
         }
         break;
-    case EventSystem::BattleStatus::ENEMYTURN:
+    case EventSystem::BattleRounds::ENEMYTURN:
         for (auto cardRenderer : m_EnemyCardRenderers) {
             for (auto enemyDice : m_CurrentBattle.GetEnemy().second) {
                 cardRenderer->Use(enemyDice, m_CurrentBattle);
@@ -115,14 +116,14 @@ void BattleUIManager::Update() {
     }
 }
 
-void BattleUIManager::OnChangeStatus(EventSystem::BattleStatus oldStatus,
-                                     EventSystem::BattleStatus newStatus) {
+void BattleUIManager::OnChangeRound(EventSystem::BattleRounds oldStatus,
+                                    EventSystem::BattleRounds newStatus) {
     switch (newStatus) {
-    case EventSystem::BattleStatus::PLAYERTURN:
+    case EventSystem::BattleRounds::PLAYERTURN:
         SetEnemyUIVisible(false);
         SetPlayerUIVisible(true);
         break;
-    case EventSystem::BattleStatus::ENEMYTURN:
+    case EventSystem::BattleRounds::ENEMYTURN:
         SetPlayerUIVisible(false);
         SetEnemyUIVisible(true);
         break;
@@ -146,7 +147,15 @@ void BattleUIManager::SetEnemyUIVisible(bool visible) {
 void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
     if (m_EndTurnBtnIcon->IsOnTop(pos) || m_EndTurnBtnText->IsOnTop(pos)) {
         LOG_ERROR("ChangeStatus");
-        m_CurrentBattle.ChangeStates();
+        m_CurrentBattle.ChangeRound();
+    }
+    if (m_CurrentBattle.GetCurrentState() == EventSystem::BattleStates::END) {
+        if (m_EndBattleBtn != nullptr) {
+            if (m_EndBattleBtn->IsOnTop(pos)) {
+                // TODO: End Battle.
+                LOG_ERROR("EndBattle");
+            }
+        }
     }
 }
 
@@ -246,5 +255,66 @@ void BattleUIManager::SetupEndTurnBtn() {
     AddChild(m_EndTurnBtnIcon);
     AddChild(m_EndTurnBtnText);
 }
+
+void BattleUIManager::ShowPlayerWinUI(int coin, int giveExp, int nextLevelExp,
+                                      int currentExp) {
+    for (auto child : GetChildren()) {
+        child->SetVisible(false);
+    }
+    auto winUi = std::make_shared<Util::GameObject>();
+    winUi->SetDrawable(
+        std::make_shared<Util::Image>(RESOURCE_DIR "/EndBattleYouWIN.png"));
+    winUi->m_Transform.scale = {0.75, 0.75};
+    winUi->m_Transform.translation = {0, winUi->GetScaledSize().y / 2};
+    winUi->SetZIndex(GetZIndex() + 1);
+
+    auto coinUi = std::make_shared<Util::GameObject>();
+    coinUi->SetZIndex(GetZIndex() + 1);
+    coinUi->m_Transform.scale = {0.75, 0.75};
+    coinUi->m_Transform.translation = {-680, 0};
+    coinUi->SetDrawable(
+        std::make_shared<Util::Image>(RESOURCE_DIR "/EndBattleCoinGive.png"));
+
+    auto expUi = std::make_shared<Util::GameObject>();
+    auto expText = std::make_shared<Util::Text>(
+        RESOURCE_DIR "/NotoSans-Bold.ttf", 72, "x" + std::to_string(giveExp),
+        Util::Color(255, 242, 47));
+    expUi->SetZIndex(GetZIndex() + 1);
+    expUi->m_Transform.scale = {0.75, 0.75};
+    expUi->m_Transform.translation = {680, 0};
+    expUi->SetDrawable(
+        std::make_shared<Util::Image>(RESOURCE_DIR "/EndBattleExpGive.png"));
+    expUi->AddChild(std::make_shared<Util::GameObject>());
+    expUi->GetChildren()[0]->SetDrawable(expText);
+    expUi->GetChildren()[0]->m_Transform.translation = {775, 0};
+    expUi->GetChildren()[0]->SetZIndex(GetZIndex() + 2);
+
+    m_EndBattleBtn = std::make_shared<Util::GameObject>();
+    m_EndBattleBtn->SetDrawable(
+        std::make_shared<Util::Image>(RESOURCE_DIR "/EndBattleBtn.png"));
+    m_EndBattleBtn->SetZIndex(GetZIndex() + 1);
+    m_EndBattleBtn->m_Transform.scale = {0.75, 0.75};
+    m_EndBattleBtn->m_Transform.translation = {0, -450};
+
+    auto nextLevelText = std::make_shared<Util::Text>(
+        RESOURCE_DIR "/NotoSans-Bold.ttf", 40,
+        "Next Level: " + std::to_string(currentExp) + "/" +
+            std::to_string(nextLevelExp),
+        Util::Color(255, 242, 47));
+
+    auto nextLevelUi = std::make_shared<Util::GameObject>();
+    nextLevelUi->SetDrawable(nextLevelText);
+    nextLevelUi->SetZIndex(GetZIndex() + 1);
+    nextLevelUi->m_Transform.translation = {0, -200};
+
+    AddChild(winUi);
+    AddChild(coinUi);
+    AddChild(expUi);
+    AddChild(m_EndBattleBtn);
+    AddChild(nextLevelUi);
+};
+void BattleUIManager::ShowEnemyWinUI() {
+
+};
 
 } // namespace UI
