@@ -48,11 +48,12 @@ protected:
     int m_Id;
     int m_Size;
     CardColor m_Color;
+
     std::string m_CardName;
     std::string m_CardDescription;
     std::vector<std::shared_ptr<Cards::CardRequireSlot>> m_CardRequireSlot{};
     // This Event Only call once per round.
-    std::unordered_map<std::string, std::function<void()>> m_OnCardUsed;
+    std::unordered_map<std::string, std::function<void()>> m_OnCardUsed{};
 };
 } // namespace Cards
 

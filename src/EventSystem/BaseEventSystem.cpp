@@ -2,6 +2,6 @@
 #include "GameCore/MainGame.hpp"
 
 namespace EventSystem {
-BaseEventSystem::BaseEventSystem(std::shared_ptr<GameCore::MainGame> mainGame)
+BaseEventSystem::BaseEventSystem(GameCore::MainGame &mainGame)
     : m_MainGame(mainGame) {}
 } // namespace EventSystem

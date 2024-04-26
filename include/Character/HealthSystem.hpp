@@ -10,6 +10,7 @@ class HealthSystem {
 
 public:
     HealthSystem(int maxHp, int currentHp);
+    ~HealthSystem();
 
     int GetCurrentHealth() const { return m_CurrentHealth; }
     int GetMaxHealth() const { return m_MaxHealth; }

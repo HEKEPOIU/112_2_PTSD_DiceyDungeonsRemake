@@ -20,7 +20,7 @@ void App::Start() {
 
     // m_BattleSystem->AddChild(m_PlayerDice);
     // m_BattleSystem->AddChild(m_TestEnemy);
-    m_MainGame = std::make_shared<GameCore::MainGame>(nullptr);
+    m_MainGame = std::make_shared<GameCore::MainGame>();
     m_Root->AddChild(m_MainGame);
 }
 

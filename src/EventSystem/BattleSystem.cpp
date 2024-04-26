@@ -2,12 +2,15 @@
 #include "Character/PlayerDice.hpp"
 #include "EventSystem/BaseEventSystem.hpp"
 #include "EventSystem/EffectSystem.hpp"
+#include "EventSystem/EmptySystem.hpp"
+#include "GameCore/MainGame.hpp"
 #include "Player/PlayerBattleInput.hpp"
+#include "Util/Logger.hpp"
 #include <memory>
 #include <random>
 
 namespace EventSystem {
-BattleSystem::BattleSystem(std::shared_ptr<GameCore::MainGame> mainGame,
+BattleSystem::BattleSystem(GameCore::MainGame &mainGame,
                            std::shared_ptr<Character::BaseCharacter> player,
                            std::shared_ptr<Character::BaseCharacter> target)
     : BaseEventSystem(mainGame),
@@ -87,7 +90,9 @@ void BattleSystem::EventUpdate() {
         break;
     }
 }
-void BattleSystem::EventEnd() {}
+void BattleSystem::EventEnd() {
+    LOG_ERROR("BattleEnd");
+}
 
 void BattleSystem::RollDice(unsigned short target) {
     std::random_device rd;
@@ -178,6 +183,10 @@ void BattleSystem::ApplyDamage(std::shared_ptr<Character::BaseCharacter> target,
     damage = glm::max(damage - shieldAmount, 0);
 
     target->ModifyCurrentHealth(-damage);
+}
+
+void BattleSystem::ChangeBackEvent() {
+    m_MainGame.SetCurrentEvent(std::make_shared<EmptySystem>(m_MainGame));
 }
 
 void BattleSystem::ApplyEffect(std::shared_ptr<Character::BaseCharacter> target,

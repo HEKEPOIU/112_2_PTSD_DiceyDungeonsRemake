@@ -27,7 +27,7 @@ public:
     }
     void ResetTime() { m_CurrentTime = 0; };
 
-    void SetOnTimerEnd(std::function<void()> func) { OnTimerEnd = func; }
+    void SetOnTimerEnd(const std::function<void()> &func) { OnTimerEnd = func; }
     void RemoveOnTimerEnd() { OnTimerEnd = nullptr; }
 
 private:

@@ -1,21 +1,21 @@
 #include "GameCore/MainGame.hpp"
 #include "Character/Dices/Warrior.hpp"
 #include "Character/Enemys/EnemyFactory.hpp"
+#include "Util/Logger.hpp"
 #include <memory>
 
 namespace GameCore {
-MainGame::MainGame(std::shared_ptr<EventSystem::BaseEventSystem> startEvent)
-    : m_CurrentEvent(startEvent) {
+MainGame::MainGame() {
     m_PlayerDice = std::make_shared<Character::Dices::Warrior>(
         "Thief", 1, 24, 24,
         RESOURCE_DIR "/graphics/characters/thief/static_1080.png");
+    m_Enemy = Character::Enemys::EnemyFactory::CreateEnemy(1);
     SetCurrentEvent(std::make_shared<EventSystem::BattleSystem>(
-        std::make_shared<MainGame>(*this), m_PlayerDice,
-        Character::Enemys::EnemyFactory::CreateEnemy(1)));
+        *this, m_PlayerDice, m_Enemy));
 }
 
 void MainGame::SetCurrentEvent(
-    std::shared_ptr<EventSystem::BaseEventSystem> targetEvent) {
+    const std::shared_ptr<EventSystem::BaseEventSystem> &targetEvent) {
     if (m_CurrentEvent.get() == targetEvent.get()) {
         return;
     }
@@ -23,6 +23,7 @@ void MainGame::SetCurrentEvent(
         m_CurrentEvent->EventEnd();
         RemoveChild(m_CurrentEvent);
     }
+
     m_CurrentEvent = targetEvent;
     m_CurrentEvent->EventStart();
     AddChild(m_CurrentEvent);
@@ -33,6 +34,6 @@ void MainGame::Update() {
 }
 
 void MainGame::OnGameStatesChange(
-    std::shared_ptr<EventSystem::BaseEventSystem> m_CurrentEvent) {}
+    const std::shared_ptr<EventSystem::BaseEventSystem> &currentEvent) {}
 
 } // namespace GameCore

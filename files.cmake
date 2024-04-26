@@ -43,6 +43,7 @@ set(INCLUDE_FILES
     EventSystem/BaseEventSystem.hpp
     EventSystem/BattleSystem.hpp
     EventSystem/EffectSystem.hpp
+    EventSystem/EmptySystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
     Cards/Variant/SwordCard.hpp

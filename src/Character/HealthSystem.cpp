@@ -8,6 +8,11 @@ HealthSystem::HealthSystem(int maxHp, int currentHp)
     : m_MaxHealth(maxHp),
       m_CurrentHealth(currentHp) {}
 
+HealthSystem::~HealthSystem() {
+    m_OnCurrentHealthChange.clear();
+    m_OnMaxHealthChange.clear();
+}
+
 void HealthSystem::SetCurrentHealth(int value) {
     int hpTemp = m_CurrentHealth;
     int newHealth = glm::clamp(value, 0, m_MaxHealth);

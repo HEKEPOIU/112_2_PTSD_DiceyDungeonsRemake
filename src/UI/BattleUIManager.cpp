@@ -60,17 +60,6 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     m_EnemyEffectBar->SetPosition({475, 345});
     m_PlayerEffectBar->SetPosition({-475, -455});
 }
-BattleUIManager::~BattleUIManager() {
-    m_CurrentBattle.GetPlayer().first->UnBindOnCurrentHealthChange(
-        "PlayerHealthChanged");
-    m_CurrentBattle.GetPlayer().first->UnBindOnMaxHealthChange(
-        "PlayerMaxHealthChanged");
-
-    m_CurrentBattle.GetEnemy().first->UnBindOnCurrentHealthChange(
-        "EnemyHealthChanged");
-    m_CurrentBattle.GetEnemy().first->UnBindOnMaxHealthChange(
-        "EnemyMaxHealthChanged");
-}
 void BattleUIManager::SetBattleBarInform(
     const std::shared_ptr<Utils::Slider> &bar, const std::string &name,
     const glm::vec2 &pos, const glm::vec2 &scale) {
@@ -152,8 +141,7 @@ void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
     if (m_CurrentBattle.GetCurrentState() == EventSystem::BattleStates::END) {
         if (m_EndBattleBtn != nullptr) {
             if (m_EndBattleBtn->IsOnTop(pos)) {
-                // TODO: End Battle.
-                LOG_ERROR("EndBattle");
+                m_CurrentBattle.ChangeBackEvent();
             }
         }
     }
@@ -211,6 +199,7 @@ void BattleUIManager::SetCardRenderer(
                 }
                 auto newCard = std::make_shared<CardsRenderer::CardRenderer>(
                     cardMap[x][y]);
+                LOG_ERROR(cardMap[x][y]->GetCardName());
                 int cardSize = cardMap[x][y]->GetSize();
                 cardRenderers.push_back(newCard);
                 cardPos.push_back({x, y});
@@ -306,6 +295,17 @@ void BattleUIManager::ShowPlayerWinUI(int coin, int giveExp, int nextLevelExp,
     nextLevelUi->SetDrawable(nextLevelText);
     nextLevelUi->SetZIndex(GetZIndex() + 1);
     nextLevelUi->m_Transform.translation = {0, -200};
+
+    // Unbind Should not be here.
+    m_CurrentBattle.GetPlayer().first->UnBindOnCurrentHealthChange(
+        "PlayerHealthChanged");
+    m_CurrentBattle.GetPlayer().first->UnBindOnMaxHealthChange(
+        "PlayerMaxHealthChanged");
+
+    m_CurrentBattle.GetEnemy().first->UnBindOnCurrentHealthChange(
+        "EnemyHealthChanged");
+    m_CurrentBattle.GetEnemy().first->UnBindOnMaxHealthChange(
+        "EnemyMaxHealthChanged");
 
     AddChild(winUi);
     AddChild(coinUi);

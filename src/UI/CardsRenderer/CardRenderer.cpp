@@ -1,4 +1,5 @@
 #include "UI/CardsRenderer/CardRenderer.hpp"
+#include "Util/Logger.hpp"
 #include "Util/Text.hpp"
 
 namespace UI::CardsRenderer {
@@ -15,13 +16,15 @@ CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
     // https://blog.simonjaeger.ch/implementing-9-slice-scaling-with-the-canvas-api
     // above link is impl detail, but it seem complicated to impl on pure opengl
     // and sdl2.
-    SetUpTransform(card);
+    SetUpTransform(m_Card);
     auto onCardUsedFunction = std::bind(&CardRenderer::OnCardUsed, this);
-    card->BindOnCardUsedEvent("OnCardUsedUI", onCardUsedFunction);
+    m_Card->BindOnCardUsedEvent("OnCardUsedUI", onCardUsedFunction);
 }
 
 CardRenderer::~CardRenderer() {
+    LOG_ERROR(m_Card->GetCardName());
     m_Card->UnBindOnCardUsedEvent("OnCardUsedUI");
+    // I don't know why it's sometime cause segfault devided by zero??
 }
 
 void CardRenderer::InitImageMap() {

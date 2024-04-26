@@ -25,7 +25,7 @@ enum class BattleStates {
 class BattleSystem : public BaseEventSystem {
 
 public:
-    BattleSystem(std::shared_ptr<GameCore::MainGame> mainGame,
+    BattleSystem(GameCore::MainGame &mainGame,
                  std::shared_ptr<Character::BaseCharacter> player,
                  std::shared_ptr<Character::BaseCharacter> target);
     ~BattleSystem();
@@ -56,6 +56,7 @@ public:
     void ApplyEffect(std::shared_ptr<Character::BaseCharacter> target,
                      EventSystem::EffectSystem::BattleEffect effect,
                      int shield);
+    void ChangeBackEvent();
 
     void UseCard(std::function<void(EventSystem::BattleSystem &)> func);
     const std::unique_ptr<EffectSystem> &GetPlayerEffectSystem() {

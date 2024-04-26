@@ -8,8 +8,6 @@ Warrior::Warrior(const std::string &name, int level, int maxHp, int currentHp,
                  const std::string &path)
     : PlayerDice(name, level, maxHp, currentHp, path) {
     m_BattleCards->AddCardById(1);
-
-    const std::shared_ptr<int> sharedPtr = std::make_shared<int>(42);
 }
 
 void Warrior::RoundStart(EventSystem::BattleSystem &currentBattle) {
