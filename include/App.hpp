@@ -2,11 +2,8 @@
 #define APP_HPP
 
 #include "Cards/CardRegister.hpp"
-#include "Character/Dices/Warrior.hpp"
-#include "Character/Enemy.hpp"
 #include "Character/Enemys/EnemyRegister.hpp"
-#include "EventSystem/BattleSystem.hpp"
-#include "GameCore/MainGame.hpp"
+#include "GameCore/GameManager.hpp"
 #include "Util/Renderer.hpp"
 #include "pch.hpp" // IWYU pragma: export
 #include <memory>
@@ -21,6 +18,8 @@ public:
 
     State GetCurrentState() const { return m_CurrentState; }
 
+    void EndGame() { m_CurrentState = State::END; }
+
     void Start();
 
     void Update();
@@ -32,10 +31,7 @@ private:
 
 private:
     State m_CurrentState = State::START;
-    // std::shared_ptr<Character::Dices::Warrior> m_PlayerDice;
-    // std::shared_ptr<Character::Enemy> m_TestEnemy;
-    // std::shared_ptr<EventSystem::BattleSystem> m_BattleSystem;
-    std::shared_ptr<GameCore::MainGame> m_MainGame;
+    std::shared_ptr<GameCore::GameManager> m_GameManager;
     std::unique_ptr<Util::Renderer> m_Root = std::make_unique<Util::Renderer>();
     std::unique_ptr<Cards::CardRegister> m_CardRegister =
         std::make_unique<Cards::CardRegister>();

@@ -28,6 +28,7 @@ set(SRC_FILES
     UI/Utils/EffectIcon.cpp
     UI/CardsRenderer/CardRenderer.cpp
     UI/CardsRenderer/RequireSlotRenderer.cpp
+    UI/StartUIManager.cpp
 )
 
 set(INCLUDE_FILES
@@ -66,6 +67,7 @@ set(INCLUDE_FILES
     UI/Utils/EffectIcon.hpp
     UI/CardsRenderer/CardRenderer.hpp
     UI/CardsRenderer/RequireSlotRenderer.hpp
+    UI/StartUIManager.hpp
 )
 
 set(TEST_FILES
