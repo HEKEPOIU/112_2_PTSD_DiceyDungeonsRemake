@@ -11,10 +11,9 @@
 
 namespace EventSystem {
 BattleSystem::BattleSystem(GameCore::MainGame &mainGame,
-                           std::shared_ptr<Character::BaseCharacter> player,
                            std::shared_ptr<Character::BaseCharacter> target)
     : BaseEventSystem(mainGame),
-      m_Player(player, {}),
+      m_Player(mainGame.GetPlayerDice(), {}),
       m_Enemy(target, {}) {
     m_PlayerInput = std::make_shared<Player::PlayerBattleInput>();
     m_UIManager = std::make_shared<UI::BattleUIManager>(*this);

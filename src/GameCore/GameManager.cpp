@@ -1,6 +1,8 @@
 #include "GameCore/GameManager.hpp"
 #include "App.hpp"
+#include "Character/Dices/Warrior.hpp"
 #include "Util/Logger.hpp"
+#include <memory>
 
 namespace GameCore {
 GameManager::GameManager(App &context, GameStates startState)
@@ -35,12 +37,20 @@ void GameManager::ChangeStates(GameStates newState) {
 }
 
 void GameManager::OnGameStatesChange(GameStates oldState, GameStates newState) {
+    if (newState == GameStates::MAINGAME) {
+        StartMainGame(std::make_shared<Character::Dices::Warrior>(
+            "Thief", 1, 24, 24,
+            RESOURCE_DIR "/graphics/characters/thief/static_1080.png"));
+        RemoveChild(m_StartUIManager);
+    }
     m_StartUIManager->OnGameStatesChange(oldState, newState);
 }
 
-void GameManager::StartMainGame(Character::PlayerDice &playerDice) {
+void GameManager::StartMainGame(
+    std::shared_ptr<Character::PlayerDice> playerDice) {
     m_CurrentStates = GameStates::MAINGAME;
-    m_MainGame = std::make_shared<MainGame>();
+    m_MainGame = std::make_shared<MainGame>(playerDice);
+    AddChild(m_MainGame);
 }
 
 void GameManager::EndGame() {

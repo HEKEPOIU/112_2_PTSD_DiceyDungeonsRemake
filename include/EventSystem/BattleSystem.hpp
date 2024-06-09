@@ -26,7 +26,6 @@ class BattleSystem : public BaseEventSystem {
 
 public:
     BattleSystem(GameCore::MainGame &mainGame,
-                 std::shared_ptr<Character::BaseCharacter> player,
                  std::shared_ptr<Character::BaseCharacter> target);
     ~BattleSystem();
 

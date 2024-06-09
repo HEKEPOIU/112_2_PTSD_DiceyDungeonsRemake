@@ -1,17 +1,13 @@
 #include "GameCore/MainGame.hpp"
-#include "Character/Dices/Warrior.hpp"
 #include "Character/Enemys/EnemyFactory.hpp"
-#include "Util/Logger.hpp"
+#include "EventSystem/MapSystem.hpp"
 #include <memory>
 
 namespace GameCore {
-MainGame::MainGame() {
-    m_PlayerDice = std::make_shared<Character::Dices::Warrior>(
-        "Thief", 1, 24, 24,
-        RESOURCE_DIR "/graphics/characters/thief/static_1080.png");
+MainGame::MainGame(std::shared_ptr<Character::PlayerDice> &playerDice)
+    : m_PlayerDice(playerDice) {
     m_Enemy = Character::Enemys::EnemyFactory::CreateEnemy(1);
-    SetCurrentEvent(std::make_shared<EventSystem::BattleSystem>(
-        *this, m_PlayerDice, m_Enemy));
+    SetCurrentEvent(std::make_shared<EventSystem::MapSystem>(*this));
 }
 
 void MainGame::SetCurrentEvent(

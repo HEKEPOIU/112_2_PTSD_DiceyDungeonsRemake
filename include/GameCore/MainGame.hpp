@@ -9,12 +9,16 @@
 namespace GameCore {
 class MainGame : public Util::GameObject {
 public:
-    MainGame();
+    MainGame(std::shared_ptr<Character::PlayerDice> &playerDice);
     void SetCurrentEvent(
         const std::shared_ptr<EventSystem::BaseEventSystem> &targetEvent);
     void OnGameStatesChange(
         const std::shared_ptr<EventSystem::BaseEventSystem> &currentEvent);
     void Update();
+
+    std::shared_ptr<Character::PlayerDice> &GetPlayerDice() {
+        return m_PlayerDice;
+    }
 
 private:
     std::shared_ptr<EventSystem::BaseEventSystem> m_CurrentEvent;

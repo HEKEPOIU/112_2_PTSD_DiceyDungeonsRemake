@@ -16,7 +16,7 @@ public:
     void UpdateGame();
     GameStates GetCurrentGameState() { return m_CurrentStates; }
     void OnGameStatesChange(GameStates oldState, GameStates newState);
-    void StartMainGame(Character::PlayerDice &playerDice);
+    void StartMainGame(std::shared_ptr<Character::PlayerDice> playerDice);
     void ChangeStates(GameStates newState);
     void EndGame();
 

@@ -19,11 +19,15 @@ public:
 private:
     void DisplayTitleUi();
     void DisableTitleUI();
+    void DisplaySelectUi();
+    void DisableSelectUi();
 
     bool isInit = false;
     GameCore::GameStates m_CurrentState;
     GameCore::GameManager &m_Context;
     std::shared_ptr<Util::GameObject> m_StartGameBtn;
+    std::shared_ptr<Util::GameObject> m_CharacterSelectBtn;
+    std::shared_ptr<Util::GameObject> m_TitleBtn;
     std::shared_ptr<Util::GameObject> m_EndGameBtn;
 };
 } // namespace UI
