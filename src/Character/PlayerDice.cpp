@@ -5,8 +5,8 @@
 
 namespace Character {
 PlayerDice::PlayerDice(const std::string &name, int level, int maxHp,
-                       int currentHp, const std::string &path)
-    : BaseCharacter(name, level, maxHp, currentHp, path) {}
+                       int currentHp, const std::string &path, const std::string &levelImagePath)
+    : BaseCharacter(name, level, maxHp, currentHp, path, levelImagePath) {}
 
 void PlayerDice::RoundStart(EventSystem::BattleSystem &currentBattle) {
     BaseCharacter::RoundStart(currentBattle);

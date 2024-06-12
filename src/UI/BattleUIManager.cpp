@@ -19,6 +19,10 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     : Util::GameObject(),
       m_CurrentBattle(currentBattle) {
     // TODO: This should be dependency injected base on context.
+}
+
+void BattleUIManager::Start(){
+
     SetDrawable(std::make_shared<Util::Image>(
         RESOURCE_DIR "/graphics/backgrounds/combat/castle/static_1080.png"));
     LOG_ERROR("zindex of background is {}", GetZIndex());
@@ -27,12 +31,12 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     SetZIndex(-1);
     m_PlayerHpBar = std::make_shared<Utils::Slider>(
         RESOURCE_DIR "/graphics/pack1.png", RESOURCE_DIR "/graphics/pack1.png",
-        currentBattle.GetPlayer().first->GetCurrentHealth(), 0,
-        currentBattle.GetPlayer().first->GetMaxHealth(), GetZIndex() + 1);
+        m_CurrentBattle.GetPlayer().first->GetCurrentHealth(), 0,
+        m_CurrentBattle.GetPlayer().first->GetMaxHealth(), GetZIndex() + 1);
     m_EnemyHpBar = std::make_shared<Utils::Slider>(
         RESOURCE_DIR "/graphics/pack1.png", RESOURCE_DIR "/graphics/pack1.png",
-        currentBattle.GetEnemy().first->GetCurrentHealth(), 0,
-        currentBattle.GetEnemy().first->GetMaxHealth(), GetZIndex() + 1);
+        m_CurrentBattle.GetEnemy().first->GetCurrentHealth(), 0,
+        m_CurrentBattle.GetEnemy().first->GetMaxHealth(), GetZIndex() + 1);
 
     AddChild(m_EnemyEffectBar);
     AddChild(m_PlayerEffectBar);
@@ -40,15 +44,15 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     SetupEndTurnBtn();
 
     SetBattleBarInform(m_PlayerHpBar,
-                       currentBattle.GetPlayer().first->GetName(), {-475, -350},
+                       m_CurrentBattle.GetPlayer().first->GetName(), {-475, -350},
                        {.5, .5});
-    SetBattleBarInform(m_EnemyHpBar, currentBattle.GetEnemy().first->GetName(),
+    SetBattleBarInform(m_EnemyHpBar, m_CurrentBattle.GetEnemy().first->GetName(),
                        {475, 400}, {.5, .5});
 
     SetCardRenderer(m_PlayerCardRenderers,
-                    currentBattle.GetPlayer().first->GetCardMap());
+                    m_CurrentBattle.GetPlayer().first->GetCardMap());
     SetCardRenderer(m_EnemyCardRenderers,
-                    currentBattle.GetEnemy().first->GetCardMap());
+                    m_CurrentBattle.GetEnemy().first->GetCardMap());
 
     for (auto cardRender : m_PlayerCardRenderers) {
         AddChild(cardRender);
@@ -60,6 +64,7 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     m_EnemyEffectBar->SetPosition({475, 345});
     m_PlayerEffectBar->SetPosition({-475, -455});
 }
+
 void BattleUIManager::SetBattleBarInform(
     const std::shared_ptr<Utils::Slider> &bar, const std::string &name,
     const glm::vec2 &pos, const glm::vec2 &scale) {

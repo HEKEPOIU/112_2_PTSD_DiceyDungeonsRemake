@@ -10,7 +10,7 @@ namespace Character {
 class PlayerDice : public BaseCharacter {
 public:
     PlayerDice(const std::string &name, int level, int maxHp, int currentHp,
-               const std::string &path);
+               const std::string &path, const std::string &levelImagePath);
 
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle) override;
     virtual void RoundUpdate(EventSystem::BattleSystem &currentBattle) override;

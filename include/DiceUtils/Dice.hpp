@@ -2,7 +2,6 @@
 #define DICEUTIllS_DICE_HPP
 
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 #include "Util/SpriteSheet.hpp"
 #include <array>
 #include <glm/fwd.hpp>

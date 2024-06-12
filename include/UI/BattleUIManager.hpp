@@ -22,6 +22,7 @@ class BattleUIManager : public Util::GameObject {
 public:
     BattleUIManager(EventSystem::BattleSystem &currentBattle);
 
+    void Start();
     void Update();
     void DetectUiClick(const glm::vec2 &pos);
     void OnChangeRound(EventSystem::BattleRounds oldRound,

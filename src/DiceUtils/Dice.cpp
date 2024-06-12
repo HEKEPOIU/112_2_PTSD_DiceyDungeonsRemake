@@ -1,5 +1,4 @@
 #include "DiceUtils/Dice.hpp"
-#include "Util/Image.hpp"
 #include "Util/SpriteSheet.hpp"
 #include <glm/fwd.hpp>
 #include <memory>

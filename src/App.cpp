@@ -10,7 +10,7 @@ void App::Start() {
     LOG_TRACE("Start");
     m_CurrentState = State::UPDATE;
     m_GameManager = std::make_shared<GameCore::GameManager>(
-        *this, GameCore::GameStates::CHARACTERSELECT);
+        *this, GameCore::GameStates::MAINGAME);
     m_Root->AddChild(m_GameManager);
 }
 

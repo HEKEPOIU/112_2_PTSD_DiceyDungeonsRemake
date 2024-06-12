@@ -6,8 +6,9 @@
 namespace Character {
 
 Enemy::Enemy(const std::string &name, int initDiceCount, int level, int maxHp,
-             int currentHp, const std::string &path)
-    : BaseCharacter(name, level, maxHp, currentHp, path),
+             int currentHp, const std::string &path,
+             const std::string &levelImagePath)
+    : BaseCharacter(name, level, maxHp, currentHp, path, levelImagePath),
       diceCount(initDiceCount) {}
 
 void Enemy::RoundStart(EventSystem::BattleSystem &currentBattle) {

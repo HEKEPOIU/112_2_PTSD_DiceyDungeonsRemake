@@ -4,6 +4,7 @@
 #include "Cards/Card.hpp"
 #include "Cards/CardSystem.hpp"
 #include "Character/HealthSystem.hpp"
+#include "Core/Drawable.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include <memory>
@@ -17,13 +18,16 @@ class BaseCharacter : public Util::GameObject {
 
 public:
     BaseCharacter(const std::string &name, int level, int maxHp, int currentHp,
-                  const std::string &path);
+                  const std::string &path, const std::string &levelImagePath);
 
     virtual void RoundStart(EventSystem::BattleSystem &currentBattle);
     virtual void RoundUpdate(EventSystem::BattleSystem &currentBattle);
     virtual void RoundEnd(EventSystem::BattleSystem &currentBattle);
     virtual void SetBattlePosition() = 0;
     Util::Transform &GetTransform() { return m_Transform; }
+    const std::shared_ptr<Core::Drawable> GetLevelDrawable() {
+        return m_LevelImage;
+    }
     void BindOnCurrentHealthChange(
         const std::string &eventId,
         std::function<void(int, int)> onCurrentHealthChange);
@@ -58,6 +62,7 @@ protected:
     std::unique_ptr<HealthSystem> m_HealthSystem;
     std::unique_ptr<Cards::CardSystem> m_BattleCards =
         std::make_unique<Cards::CardSystem>(3, 2);
+    std::shared_ptr<Util::Image> m_LevelImage;
     int m_Level;
 };
 } // namespace Character

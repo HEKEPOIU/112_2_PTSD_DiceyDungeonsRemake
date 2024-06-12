@@ -18,6 +18,15 @@ BattleSystem::BattleSystem(GameCore::MainGame &mainGame,
     m_PlayerInput = std::make_shared<Player::PlayerBattleInput>();
     m_UIManager = std::make_shared<UI::BattleUIManager>(*this);
 
+}
+
+BattleSystem::~BattleSystem() {
+    m_Player.first->UnBindOnCurrentHealthChange("OnPlayerDead");
+    m_Enemy.first->UnBindOnCurrentHealthChange("OnEnemyDead");
+}
+
+void BattleSystem::EventStart() {
+    m_UIManager->Start();
     m_Player.first->BindOnCurrentHealthChange(
         "OnPlayerDead", [this](int oldValue, int newValue) {
             if (newValue <= 0) {
@@ -61,14 +70,6 @@ BattleSystem::BattleSystem(GameCore::MainGame &mainGame,
     AddChild(m_UIManager);
     AddChild(m_Player.first);
     AddChild(m_Enemy.first);
-}
-
-BattleSystem::~BattleSystem() {
-    m_Player.first->UnBindOnCurrentHealthChange("OnPlayerDead");
-    m_Enemy.first->UnBindOnCurrentHealthChange("OnEnemyDead");
-}
-
-void BattleSystem::EventStart() {
     m_Player.first->SetBattlePosition();
     m_Enemy.first->SetBattlePosition();
     m_Player.first->RoundStart(*this);

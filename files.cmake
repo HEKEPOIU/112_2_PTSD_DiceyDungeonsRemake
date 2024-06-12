@@ -19,6 +19,9 @@ set(SRC_FILES
     Cards/RequireVariant/MaxRequire.cpp
     EventSystem/BattleSystem.cpp
     EventSystem/MapSystem.cpp
+    EventSystem/Maps/Node.cpp
+    EventSystem/Maps/Map.cpp
+    EventSystem/Maps/NodeItem.cpp
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
     AI/DumbAI.cpp
@@ -47,6 +50,9 @@ set(INCLUDE_FILES
     EventSystem/EffectSystem.hpp
     EventSystem/EmptySystem.hpp
     EventSystem/MapSystem.hpp
+    EventSystem/Maps/NodeItem.hpp
+    EventSystem/Maps/Node.hpp
+    EventSystem/Maps/Map.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
     Cards/Variant/SwordCard.hpp

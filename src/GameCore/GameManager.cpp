@@ -38,9 +38,10 @@ void GameManager::ChangeStates(GameStates newState) {
 
 void GameManager::OnGameStatesChange(GameStates oldState, GameStates newState) {
     if (newState == GameStates::MAINGAME) {
-        StartMainGame(std::make_shared<Character::Dices::Warrior>(
-            "Thief", 1, 24, 24,
-            RESOURCE_DIR "/graphics/characters/thief/static_1080.png"));
+        auto player  = std::make_shared<Character::Dices::Warrior>(
+            "Warrior", 1, 24, 24,
+            RESOURCE_DIR "/graphics/characters/warrior/static_1080.png",RESOURCE_DIR "/graphics/characters/warrior/charicon_warrior_1080.png");
+        StartMainGame(player);
         RemoveChild(m_StartUIManager);
     }
     m_StartUIManager->OnGameStatesChange(oldState, newState);

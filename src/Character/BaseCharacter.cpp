@@ -8,11 +8,12 @@
 namespace Character {
 
 BaseCharacter::BaseCharacter(const std::string &name, int level, int maxHp,
-                             int currentHp, const std::string &path)
-    : m_CharacterImage(std::make_shared<Util::Image>(path)),
+                             int currentHp, const std::string &path, const std::string &levelImagePath)
+    : m_Name(name),
+      m_CharacterImage(std::make_shared<Util::Image>(path)),
       m_HealthSystem(std::make_unique<HealthSystem>(maxHp, currentHp)),
-      m_Level(level),
-      m_Name(name) {
+      m_LevelImage(std::make_shared<Util::Image>(levelImagePath)),
+      m_Level(level) {
     SetDrawable(m_CharacterImage);
 }
 
