@@ -22,10 +22,12 @@ set(SRC_FILES
     EventSystem/Maps/Node.cpp
     EventSystem/Maps/Map.cpp
     EventSystem/Maps/NodeItem.cpp
+    EventSystem/EndSystem.cpp
     DiceUtils/Dice.cpp
     AI/EnemyAI.cpp
     AI/DumbAI.cpp
     Player/PlayerBattleInput.cpp
+    Player/PlayerMapInput.cpp
     UI/BattleUIManager.cpp
     UI/Utils/Slider.cpp
     UI/Utils/EffectBar.cpp
@@ -53,6 +55,7 @@ set(INCLUDE_FILES
     EventSystem/Maps/NodeItem.hpp
     EventSystem/Maps/Node.hpp
     EventSystem/Maps/Map.hpp
+    EventSystem/EndSystem.hpp
     Cards/CardSystem.hpp
     Cards/Card.hpp
     Cards/Variant/SwordCard.hpp
@@ -67,6 +70,7 @@ set(INCLUDE_FILES
     DiceUtils/Dice.hpp
     AI/DumbAI.hpp
     AI/EnemyAI.hpp
+    Player/PlayerMapInput.hpp
     Player/PlayerBattleInput.hpp
     UI/BattleUIManager.hpp
     ResourceConfig.hpp

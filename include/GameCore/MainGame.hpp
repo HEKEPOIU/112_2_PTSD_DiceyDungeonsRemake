@@ -7,10 +7,16 @@
 #include "Util/GameObject.hpp"
 #include <memory>
 #include <queue>
+
+namespace GameCore{
+    class GameManager; 
+    enum class GameStates;
+}
+
 namespace GameCore {
 class MainGame : public Util::GameObject {
 public:
-    MainGame(std::shared_ptr<Character::PlayerDice> &playerDice);
+    MainGame(GameManager& context, std::shared_ptr<Character::PlayerDice> &playerDice);
     void SetCurrentEvent(
         const std::shared_ptr<EventSystem::BaseEventSystem> &targetEvent);
     void
@@ -20,11 +26,10 @@ public:
     std::shared_ptr<Character::PlayerDice> &GetPlayerDice() {
         return m_PlayerDice;
     }
+    void EndGame();
 
-    void SaveToCache(const std::shared_ptr<EventSystem::BaseEventSystem> data) {
-        m_Cache = data;
-    }
-    
+    void ChangeGameState(GameStates newState);
+
     void EndEvent();
 
 private:
@@ -32,7 +37,7 @@ private:
     std::shared_ptr<Character::PlayerDice> m_PlayerDice;
     std::shared_ptr<Character::Enemy> m_Enemy;
     std::queue<std::shared_ptr<EventSystem::BaseEventSystem>> m_EventQueue;
-    std::shared_ptr<EventSystem::BaseEventSystem> m_Cache;
+    GameManager& m_Context;
 };
 } // namespace GameCore
 

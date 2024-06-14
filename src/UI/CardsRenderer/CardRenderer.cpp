@@ -22,7 +22,6 @@ CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
 }
 
 CardRenderer::~CardRenderer() {
-    LOG_ERROR(m_Card->GetCardName());
     m_Card->UnBindOnCardUsedEvent("OnCardUsedUI");
     // I don't know why it's sometime cause segfault devided by zero??
 }

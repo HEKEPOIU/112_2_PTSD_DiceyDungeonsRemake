@@ -21,7 +21,7 @@ BattleUIManager::BattleUIManager(EventSystem::BattleSystem &currentBattle)
     // TODO: This should be dependency injected base on context.
 }
 
-void BattleUIManager::Start(){
+void BattleUIManager::Start() {
 
     SetDrawable(std::make_shared<Util::Image>(
         RESOURCE_DIR "/graphics/backgrounds/combat/castle/static_1080.png"));
@@ -44,10 +44,11 @@ void BattleUIManager::Start(){
     SetupEndTurnBtn();
 
     SetBattleBarInform(m_PlayerHpBar,
-                       m_CurrentBattle.GetPlayer().first->GetName(), {-475, -350},
+                       m_CurrentBattle.GetPlayer().first->GetName(),
+                       {-475, -350}, {.5, .5});
+    SetBattleBarInform(m_EnemyHpBar,
+                       m_CurrentBattle.GetEnemy().first->GetName(), {475, 400},
                        {.5, .5});
-    SetBattleBarInform(m_EnemyHpBar, m_CurrentBattle.GetEnemy().first->GetName(),
-                       {475, 400}, {.5, .5});
 
     SetCardRenderer(m_PlayerCardRenderers,
                     m_CurrentBattle.GetPlayer().first->GetCardMap());
@@ -311,6 +312,14 @@ void BattleUIManager::ShowPlayerWinUI(int coin, int giveExp, int nextLevelExp,
         "EnemyHealthChanged");
     m_CurrentBattle.GetEnemy().first->UnBindOnMaxHealthChange(
         "EnemyMaxHealthChanged");
+    for (auto card : m_PlayerCardRenderers) {
+        RemoveChild(card);
+    }
+    for (auto card : m_EnemyCardRenderers) {
+        RemoveChild(card);
+    }
+    m_PlayerCardRenderers.clear();
+    m_EnemyCardRenderers.clear();
 
     AddChild(winUi);
     AddChild(coinUi);

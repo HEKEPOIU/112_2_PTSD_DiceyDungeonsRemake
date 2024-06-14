@@ -186,7 +186,7 @@ void BattleSystem::ApplyDamage(std::shared_ptr<Character::BaseCharacter> target,
 }
 
 void BattleSystem::ChangeBackEvent() {
-    m_MainGame.SetCurrentEvent(std::make_shared<EmptySystem>(m_MainGame));
+    m_MainGame.EndEvent();
 }
 
 void BattleSystem::ApplyEffect(std::shared_ptr<Character::BaseCharacter> target,

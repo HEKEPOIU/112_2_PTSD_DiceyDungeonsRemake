@@ -58,7 +58,7 @@ protected:
 
 private:
     std::unique_ptr<DiceUtils::Timer> m_ActionSpacingTimer =
-        std::make_unique<DiceUtils::Timer>(2);
+        std::make_unique<DiceUtils::Timer>(1);
 };
 } // namespace AI
 

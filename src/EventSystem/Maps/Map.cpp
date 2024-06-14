@@ -1,9 +1,10 @@
 #include "EventSystem/Maps/Map.hpp"
+#include "EventSystem/EndSystem.hpp"
+#include "EventSystem/MapSystem.hpp"
 #include "EventSystem/Maps/NodeItem.hpp"
 #include "GameCore/MainGame.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
-#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <glm/fwd.hpp>
@@ -18,17 +19,15 @@
 #include <vector>
 
 namespace EventSystem::Maps {
-Map::Map(GameCore::MainGame &game)
+Map::Map(GameCore::MainGame &game, const std::shared_ptr<MapSystem> &owner)
     : Util::GameObject(),
       m_Game(game),
-      m_PlayerDice(std::make_shared<Util::GameObject>()) {
-    AddChild(m_PlayerDice);
-    m_PlayerDice->SetZIndex(5);
-}
+      m_Owner(owner) {}
 
 std::vector<std::shared_ptr<Node>> Map::GenerateEmptyMap() {
+
     int totalItemNum = 0;
-    for (auto map : m_ItemNum[0]) {
+    for (auto map : m_ItemNum[m_CurrentLevel]) {
         totalItemNum += map.second;
     }
 
@@ -42,7 +41,7 @@ std::vector<std::shared_ptr<Node>> Map::GenerateEmptyMap() {
         m_MapX = disX(gen);
         m_MapY = disY(gen);
         std::cout << round((m_MapX * m_MapY) / 2.f) << std::endl;
-    } while (round((m_MapX * m_MapY) / 2.f) < totalItemNum);
+    } while (round((m_MapX * m_MapY) / 2.f) < totalItemNum + 1);
     std::cout << "X" << m_MapX << "Y" << m_MapY << std::endl;
     glm::ivec2 nodeSize = {189, 122};
     int xSpecing = 30;
@@ -98,7 +97,13 @@ void Map::GetNextMap() {
     for (auto line : m_Lines) {
         RemoveChild(line);
     }
+    m_Nodes.clear();
+    m_Lines.clear();
     m_CurrentLevel += 1;
+    if (m_CurrentLevel > m_ItemNum.size() - 1) {
+        m_Owner->ToNextEvent(std::make_shared<EndSystem>(m_Game));
+        return;
+    }
     m_Nodes = GenerateEmptyMap();
     RandomPlaceItem(m_Nodes);
     for (auto item : m_Nodes) {
@@ -107,24 +112,25 @@ void Map::GetNextMap() {
 }
 
 void Map::SpawnPlayer() {
-    auto playerDiceimg = m_Game.GetPlayerDice()->GetLevelDrawable();
-    m_PlayerDice->SetDrawable(playerDiceimg);
-    m_PlayerDice->m_Transform.scale = {1.5, 1.5};
+    if (m_CurrentLevel > m_ItemNum.size() - 1) {
+        m_Owner->ToNextEvent(std::make_shared<EndSystem>(m_Game));
+        return;
+    }
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<unsigned short> disX(0, m_Nodes.size() - 1);
     int playerIndex;
     while (true) {
         playerIndex = disX(gen);
+        std::cout << "Try To Place Item" << std::endl;
         if (m_Nodes[playerIndex]->GetItem() == nullptr) {
-            SetPlayerPosition(m_Nodes[playerIndex]->m_Transform.translation);
+            m_Nodes[playerIndex]->SetItem(std::make_shared<NodeItem>(
+                m_Game, shared_from_this(), ItemType::PLAYER));
+            m_PlayerNode = m_Nodes[playerIndex];
             break;
         }
     }
     ConnectMap(playerIndex, m_Nodes);
-}
-void Map::SetPlayerPosition(glm::vec2 newPos) {
-    m_PlayerDice->m_Transform.translation = newPos + glm::vec2{0, 20};
 }
 
 void Map::ConnectMap(int playerSpotIndex,
@@ -137,15 +143,18 @@ void Map::ConnectMap(int playerSpotIndex,
         }
     }
     for (auto it = haveItemNodes.rbegin(); it != haveItemNodes.rend(); ++it) {
-        // auto nextIt = std::next(it);
-        // if (nextIt != haveItemNodes.rend()) {
-        //     ConnectNode(it->first, nextIt->first);
-        // } else {
-        //     ConnectNode((--haveItemNodes.rend())->first, playerSpotIndex);
-        //     ConnectNode(playerSpotIndex, haveItemNodes.rbegin()->first);
-        // }
         ConnectNode(playerSpotIndex, it->first);
     }
+    for (auto node : m_Nodes) {
+        if (node->IsIsolated()) {
+            RemoveChild(node);
+        }
+    }
+    m_Nodes.erase(std::remove_if(m_Nodes.begin(), m_Nodes.end(),
+                                 [](const std::shared_ptr<Node> &node) {
+                                     return node->IsIsolated();
+                                 }),
+                  m_Nodes.end());
 }
 
 glm::ivec2 Map::GetLinePosByIndex(int index) {
@@ -257,8 +266,79 @@ void Map::ConnectNode(int indexA, int indexB) {
     ConnectNode(GetIndexByLinePos(lineDataA), indexB);
 }
 
+std::vector<std::shared_ptr<Node>> Map::GetPath(std::shared_ptr<Node> &from,
+                                                std::shared_ptr<Node> &to) {
+    std::shared_ptr<Node> cache = from;
+    std::vector<std::shared_ptr<Node>> path;
+    glm::vec2 targetPos = to->m_Transform.translation;
+    while (true) {
+        glm::vec2 pA = cache->m_Transform.translation;
+        glm::vec2 dir = targetPos - pA;
+        glm::vec2 normalizeDir =
+            glm::clamp(dir, glm::vec2(-1.0f), glm::vec2(1.0f));
+        std::shared_ptr<Node> next =
+            GetTargetDirNode(cache, normalizeDir, path);
+        if (next == nullptr) {
+            break;
+        }
+        path.push_back(next);
+        cache = next;
+    }
+    return path;
+}
+void Map::SetPlayerPosition(glm::vec2 newPos) {
+    auto playerItem = m_PlayerNode->GetItem();
+    playerItem->m_Transform.translation = newPos;
+}
+
+std::shared_ptr<Node> Map::GetPlayerNode() {
+    return m_PlayerNode;
+}
+
+std::shared_ptr<NodeItem> Map::PlayersEndAt(std::shared_ptr<Node> &node) {
+    auto nodeItem = node->GetItem();
+    node->SetItem(m_PlayerNode->GetItem());
+    m_PlayerNode->RemoveItem();
+    m_PlayerNode = node;
+    return nodeItem;
+}
+
+std::shared_ptr<Node>
+Map::GetTargetDirNode(std::shared_ptr<Node> &node, glm::vec2 dir,
+                      std::vector<std::shared_ptr<Node>> path) {
+    std::shared_ptr<Node> target = nullptr;
+    if (target == nullptr && dir == glm::vec2{1, 1}) {
+        target = node->GetTopRight(path);
+    } else if (target == nullptr && dir == glm::vec2{1, -1}) {
+        target = node->GetBottomRight(path);
+    } else if (target == nullptr && dir == glm::vec2{-1, 1}) {
+        target = node->GetTopLeft(path);
+    } else if (target == nullptr && dir == glm::vec2{-1, -1}) {
+        target = node->GetBottomLeft(path);
+    }
+    if (target == nullptr && dir.y == 1) {
+        target = node->GetRandomTop(path);
+    }
+    if (target == nullptr && dir.y == -1) {
+        target = node->GetRandomBottom(path);
+    }
+    if (target == nullptr && dir.x == 1) {
+        target = node->GetRandomRight(path);
+    }
+    if (target == nullptr && dir.x == -1) {
+        target = node->GetRandomLeft(path);
+    }
+    if (dir == glm::vec2{0, 0}) {
+        return nullptr;
+    }
+    if (target == nullptr) {
+        target = node->GetRandom(path);
+    }
+    return target;
+}
+
 bool Map::ConnectNodeNear(int indexA, int indexB) {
-    if(m_Nodes[indexA]->IsConnected(m_Nodes[indexB])){
+    if (m_Nodes[indexA]->IsConnected(m_Nodes[indexB])) {
         std::cout << "Already connect" << std::endl;
         return false;
     }
@@ -277,6 +357,14 @@ bool Map::ConnectNodeNear(int indexA, int indexB) {
     m_Lines.push_back(line);
     AddChild(line);
     return true;
+}
+
+std::vector<std::shared_ptr<Node>> &Map::GetNodes() {
+    return m_Nodes;
+}
+
+std::shared_ptr<MapSystem> Map::GetOwner() {
+    return m_Owner;
 }
 
 std::array<std::unordered_map<ItemType, int>, 5> Map::m_ItemNum = {

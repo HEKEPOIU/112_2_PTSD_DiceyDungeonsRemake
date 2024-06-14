@@ -3,14 +3,17 @@
 #include "EventSystem/BattleSystem.hpp"
 #include "EventSystem/ExitSystem.hpp"
 #include "GameCore/MainGame.hpp"
+#include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Logger.hpp"
 #include <memory>
 
 namespace EventSystem::Maps {
 
-NodeItem::NodeItem(GameCore::MainGame &game,const std::shared_ptr<Map> &map, ItemType itemType)
-    : m_Owner(map),
+NodeItem::NodeItem(GameCore::MainGame &game, const std::shared_ptr<Map> &map,
+                   ItemType itemType)
+    : Util::GameObject(),
+      m_Owner(map),
       m_Game(game) {
     InitEventByType(itemType);
     SetZIndex(5);
@@ -47,12 +50,19 @@ void NodeItem::InitEventByType(ItemType type) {
         break;
     }
     case ItemType::EXIT: {
-        m_Event = std::make_shared<ExitSystem>(m_Game, m_Owner);
-        SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/Exit.png"));  
-        m_Offset = {0,30};
-        m_Transform.scale = {.9,.9};
+        m_Event = std::make_shared<ExitSystem>(m_Game, m_Owner->GetOwner());
+        SetDrawable(std::make_shared<Util::Image>(RESOURCE_DIR "/Exit.png"));
+        m_Offset = {0, 30};
+        m_Transform.scale = {.9, .9};
         break;
     } break;
+    case ItemType::PLAYER:
+        auto playerDiceimg = m_Game.GetPlayerDice()->GetLevelDrawable();
+        SetDrawable(playerDiceimg);
+        SetZIndex(10);
+        m_Transform.scale = {1.5, 1.5};
+        m_Offset = {0, 20};
+        break;
     }
 }
 } // namespace EventSystem::Maps

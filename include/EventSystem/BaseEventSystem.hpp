@@ -2,7 +2,6 @@
 #define EVENTSYSTEM_BASEEVENTSYSTEM_HPP
 
 #include "Util/GameObject.hpp"
-#include <memory>
 namespace GameCore {
 class MainGame;
 } // namespace GameCore

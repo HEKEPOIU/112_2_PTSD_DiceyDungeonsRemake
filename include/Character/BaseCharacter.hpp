@@ -54,8 +54,6 @@ public:
 
     int GetLevel() { return m_Level; }
 
-    void SetLevel(int newLevel) { m_Level = newLevel; }
-
 protected:
     std::string m_Name;
     std::shared_ptr<Util::Image> m_CharacterImage;

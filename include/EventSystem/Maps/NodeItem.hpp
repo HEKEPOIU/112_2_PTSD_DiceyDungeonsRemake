@@ -13,6 +13,7 @@ class Map;
 
 namespace EventSystem::Maps {
 enum class ItemType {
+    PLAYER,
     ENEMY,
     APPLE,
     BOX,

@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 namespace EventSystem::Maps {
+
 class Node : public Util::GameObject {
 
 public:
@@ -19,8 +20,25 @@ public:
     std::shared_ptr<Maps::NodeItem> GetItem();
     void SetItem(const std::shared_ptr<Maps::NodeItem> &item);
 
-    void AddConnection(const std::shared_ptr<Node>& node);
+    void RemoveItem();
+    void AddConnection(const std::shared_ptr<Node> &node);
     bool IsConnected(std::shared_ptr<Node> node);
+    bool IsIsolated();
+    std::shared_ptr<Node> GetTopRight(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node>
+    GetBottomRight(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node> GetTopLeft(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node>
+    GetBottomLeft(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node> GetRandomTop(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node>
+    GetRandomBottom(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node>
+    GetRandomLeft(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node>
+    GetRandomRight(std::vector<std::shared_ptr<Node>> path);
+    std::shared_ptr<Node> GetRandom(std::vector<std::shared_ptr<Node>> path);
+
 private:
     std::shared_ptr<Maps::NodeItem> m_Item;
     std::vector<std::shared_ptr<Node>> m_Connect;
