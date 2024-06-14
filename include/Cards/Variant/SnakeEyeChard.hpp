@@ -32,6 +32,10 @@ public:
                 [this](EventSystem::BattleSystem &currentBattle) {
 
                 });
+            currentBattle.RemoveDice(m_CardRequireSlot[0]->GetContainDice());
+            for (auto event : m_OnCardUsed) {
+                event.second();
+            }
             currentBattle.RollDice(1);
             currentBattle.RollDice(1);
             m_Current = 0;

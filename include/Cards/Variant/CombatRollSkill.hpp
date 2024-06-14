@@ -17,6 +17,7 @@ public:
         AddRequireSlot(std::make_shared<RequireVariant::NoneRequire>(*this));
     };
     virtual void ResetCard() override { maxUseCount = 3; }
+    virtual void ResetToDefault() override { maxUseCount = 3; }
 
     virtual void Use(EventSystem::BattleSystem &currentBattle) override {
         if (!IsFit()) {

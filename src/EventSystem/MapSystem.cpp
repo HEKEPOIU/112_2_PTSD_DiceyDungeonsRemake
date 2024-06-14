@@ -60,6 +60,9 @@ void MapSystem::MovePlayerToTarget(std::shared_ptr<Maps::Node> &target) {
             i++;
         }
         m_IsMoving = false;
+        if (pathToTarget.size() == 0) {
+            return;
+        }
         m_EventItem = m_Current->PlayersEndAt(pathToTarget.back());
     });
     moveThread.detach(); // 分离线程，主线程不会被阻塞

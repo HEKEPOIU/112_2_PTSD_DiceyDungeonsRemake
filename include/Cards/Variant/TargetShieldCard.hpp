@@ -38,7 +38,11 @@ public:
                 break;
             }
         });
+
         currentBattle.RemoveDice(m_CardRequireSlot[0]->GetContainDice());
+        for (auto event : m_OnCardUsed) {
+            event.second();
+        }
     };
 };
 } // namespace Cards::Variant

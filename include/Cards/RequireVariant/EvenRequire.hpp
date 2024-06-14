@@ -10,7 +10,7 @@ class EvenRequire : public CardRequireSlot {
 public:
     EvenRequire(Card &card)
         : CardRequireSlot(card) {}
-    virtual bool IsFit(int size) override { return size % 2 == 0; };
+    virtual bool IsFit(int size) override { return (size % 2) == 0; };
     virtual std::shared_ptr<UI::CardsRenderer::RequireSlotRenderer>
     GetRenderer() override {
         auto renderer =
