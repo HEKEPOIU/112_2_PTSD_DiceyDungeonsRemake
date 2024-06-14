@@ -24,6 +24,9 @@ public:
             return;
         }
         for (auto slotRender : m_SlotObjects) {
+            if (dice == nullptr) {
+                return;
+            }
             if (slotRender->IsOnTop(dice->GetTransform().translation)) {
                 slotRender->Use(dice, currentBattle);
 
@@ -36,10 +39,25 @@ public:
 
     void SetCardVisible(bool visible) {
         m_Visible = visible;
+        if (!(m_Card->CanUse())) {
+            m_Visible = false;
+        } else {
+            m_Visible = visible;
+        }
+        m_Card->ResetCard();
         for (auto child : m_Children) {
             child->SetVisible(visible);
+            if (!(m_Card->CanUse())) {
+                child->SetVisible(false);
+            } else {
+                child->SetVisible(visible);
+            }
             for (auto childD2 : child->GetChildren()) {
-                childD2->SetVisible(visible);
+                if (!(m_Card->CanUse())) {
+                    childD2->SetVisible(false);
+                } else {
+                    childD2->SetVisible(visible);
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ SwordCard::SwordCard()
     m_Color = Cards::CardColor::RED;
     AddRequireSlot(std::make_shared<RequireVariant::NoneRequire>(*this));
 }
-void SwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
+void SwordCard::Use(EventSystem::BattleSystem &currentBattle) {
     if (!IsFit()) {
         return;
     }

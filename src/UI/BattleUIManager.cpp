@@ -97,8 +97,8 @@ void BattleUIManager::Update() {
 
     switch (currentStatus) {
     case EventSystem::BattleRounds::PLAYERTURN:
-        for (auto cardRenderer : m_PlayerCardRenderers) {
-            for (auto playerDice : m_CurrentBattle.GetPlayer().second) {
+        for (auto &cardRenderer : m_PlayerCardRenderers) {
+            for (auto &playerDice : m_CurrentBattle.GetPlayer().second) {
                 cardRenderer->Use(playerDice, m_CurrentBattle);
             }
         }
@@ -152,8 +152,8 @@ void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
                 m_CurrentBattle.ChangeBackEvent();
             }
         }
-        if(m_FailBtn != nullptr){
-            if(m_FailBtn->IsOnTop(pos)){
+        if (m_FailBtn != nullptr) {
+            if (m_FailBtn->IsOnTop(pos)) {
                 m_CurrentBattle.ChangeBackEvent();
                 m_CurrentBattle.ChangeBackEvent();
             }
@@ -202,7 +202,7 @@ void BattleUIManager::SetCardRenderer(
     int columns = 0;
     bool isNewColumns = false;
     glm::ivec2 cardSize1 = {0, 0};
-    glm::vec2 cardSize2 = {0,0};
+    glm::vec2 cardSize2 = {0, 0};
     std::vector<glm::ivec2> cardPos;
     for (size_t x = 0; x < cardMap.size(); x++) {
         isNewColumns = false;
@@ -214,6 +214,7 @@ void BattleUIManager::SetCardRenderer(
                 }
                 auto newCard = std::make_shared<CardsRenderer::CardRenderer>(
                     cardMap[x][y]);
+                cardMap[x][y]->ResetToDefault();
                 LOG_ERROR(cardMap[x][y]->GetCardName());
                 std::cout << "On the: " << x << " " << y << std::endl;
                 int cardSize = cardMap[x][y]->GetSize();
@@ -228,7 +229,7 @@ void BattleUIManager::SetCardRenderer(
             }
         }
     }
-    int cardSizeX = cardSize2 == glm::vec2(0,0) ? cardSize1.x : cardSize2.x;
+    int cardSizeX = cardSize2 == glm::vec2(0, 0) ? cardSize1.x : cardSize2.x;
     int cardXDistance = (cardSizeX + xSpace);
     int width = (columns - 1) * cardXDistance;
     int startXPos = -(width / 2);
@@ -357,7 +358,6 @@ void BattleUIManager::ShowEnemyWinUI() {
     m_FailBtn->m_Transform.scale = {0.75, 0.75};
     m_FailBtn->m_Transform.translation = {0, -450};
     AddChild(m_FailBtn);
-   
 };
 
 } // namespace UI

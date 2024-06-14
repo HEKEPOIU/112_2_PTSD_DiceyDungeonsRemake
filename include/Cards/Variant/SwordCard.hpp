@@ -6,7 +6,7 @@ namespace Cards::Variant {
 class SwordCard : public Cards::Card {
 public:
     SwordCard();
-    virtual void Use(EventSystem::BattleSystem &currentBattle) const override;
+    virtual void Use(EventSystem::BattleSystem &currentBattle) override;
 };
 } // namespace Cards::Variant
 

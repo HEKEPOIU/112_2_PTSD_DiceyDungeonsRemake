@@ -12,7 +12,7 @@ class RequireSlotRenderer;
 namespace Cards {
 class CardRequireSlot {
 public:
-    CardRequireSlot(const Card &card)
+    CardRequireSlot(Card &card)
         : m_Owner(card){};
 
     virtual bool IsFit(int size) = 0;
@@ -37,7 +37,7 @@ public:
 
 protected:
     std::shared_ptr<DiceUtils::Dice> m_ContainDice;
-    const Card &m_Owner;
+    Card &m_Owner;
 };
 } // namespace Cards
 

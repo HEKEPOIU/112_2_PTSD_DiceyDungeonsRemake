@@ -25,7 +25,7 @@ public:
     GetRequireSlot() const {
         return m_CardRequireSlot;
     }
-    virtual void Use(EventSystem::BattleSystem &currentBattle) const = 0;
+    virtual void Use(EventSystem::BattleSystem &currentBattle) = 0;
 
     bool IsFit() const;
 
@@ -43,6 +43,11 @@ public:
                              std::function<void()> onCardUsed);
 
     void UnBindOnCardUsedEvent(const std::string &eventId);
+
+    virtual void ResetCard() {};
+    virtual void ResetToDefault() {};
+
+    virtual bool CanUse() { return true; };
 
 protected:
     int m_Id;

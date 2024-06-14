@@ -13,7 +13,8 @@ MaxRequire::GetRenderer() {
         std::make_shared<UI::CardsRenderer::RequireSlotRenderer>(*this);
     auto child = std::make_shared<Util::GameObject>();
     child->SetDrawable(std::make_shared<Util::Text>(
-        RESOURCE_DIR "/NotoSans-Regular.ttf", 20, "Max\n   3   ",
+        RESOURCE_DIR "/NotoSans-Regular.ttf", 20,
+        "Max\n    " + std::to_string(m_Max) + "   ",
         Util::Color(255, 255, 255)));
     renderer->AddChild(child);
     return renderer;

@@ -5,7 +5,7 @@
 namespace Cards::RequireVariant {
 class ContainedDiceRequire : public CardRequireSlot {
 public:
-    ContainedDiceRequire(const Card &card, int num)
+    ContainedDiceRequire(Card &card, int num)
         : CardRequireSlot(card) {
         m_ContainDice = std::make_shared<DiceUtils::Dice>(num);
     }

@@ -30,10 +30,10 @@ public:
     GetRandomEnemy(const std::vector<int> &randomRange) {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<unsigned short> range(
-            0, randomRange.size() - 1);
+        std::uniform_int_distribution<unsigned short> range(1,
+                                                            m_Creators.size());
         int idIndex = range(gen);
-        return m_Creators[randomRange[idIndex]]();
+        return m_Creators[idIndex]();
     }
 
 private:

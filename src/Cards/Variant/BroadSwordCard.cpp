@@ -15,7 +15,7 @@ BroadSwordCard::BroadSwordCard()
     AddRequireSlot(
         std::make_shared<RequireVariant::ContainedDiceRequire>(*this, 2));
 }
-void BroadSwordCard::Use(EventSystem::BattleSystem &currentBattle) const {
+void BroadSwordCard::Use(EventSystem::BattleSystem &currentBattle) {
     if (!IsFit()) {
         return;
     }

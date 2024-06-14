@@ -5,7 +5,7 @@
 namespace Cards::RequireVariant {
 class NoneRequire : public CardRequireSlot {
 public:
-    NoneRequire(const Card &card)
+    NoneRequire(Card &card)
         : CardRequireSlot(card) {}
     virtual bool IsFit(int size) override { return true; };
     virtual std::shared_ptr<UI::CardsRenderer::RequireSlotRenderer>

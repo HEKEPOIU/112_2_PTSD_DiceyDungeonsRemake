@@ -7,7 +7,7 @@ namespace Cards {
 
 bool Card::IsFit() const {
     for (auto slot : m_CardRequireSlot) {
-        if (!slot->IsFit(m_Size)) {
+        if (!slot->IsFit(slot->GetContainDiceNum())) {
             return false;
         }
     }

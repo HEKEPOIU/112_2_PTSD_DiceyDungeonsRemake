@@ -14,7 +14,7 @@ SmallShieldCard::SmallShieldCard()
     m_Color = Cards::CardColor::ORANGE;
     AddRequireSlot(std::make_shared<RequireVariant::MaxRequire>(*this, 3));
 }
-void SmallShieldCard::Use(EventSystem::BattleSystem &currentBattle) const {
+void SmallShieldCard::Use(EventSystem::BattleSystem &currentBattle) {
     if (!IsFit()) {
         return;
     }

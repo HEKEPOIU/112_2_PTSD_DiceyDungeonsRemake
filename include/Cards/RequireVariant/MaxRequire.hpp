@@ -5,7 +5,7 @@
 namespace Cards::RequireVariant {
 class MaxRequire : public CardRequireSlot {
 public:
-    MaxRequire(const Card &card, int num)
+    MaxRequire(Card &card, int num)
         : CardRequireSlot(card),
           m_Max(num) {}
     virtual bool IsFit(int size) override { return size <= m_Max; };
