@@ -3,6 +3,7 @@
 #include "EventSystem/BaseEventSystem.hpp"
 #include "EventSystem/EffectSystem.hpp"
 #include "EventSystem/EmptySystem.hpp"
+#include "EventSystem/EndSystem.hpp"
 #include "GameCore/MainGame.hpp"
 #include "Player/PlayerBattleInput.hpp"
 #include "Util/Logger.hpp"
@@ -17,7 +18,6 @@ BattleSystem::BattleSystem(GameCore::MainGame &mainGame,
       m_Enemy(target, {}) {
     m_PlayerInput = std::make_shared<Player::PlayerBattleInput>();
     m_UIManager = std::make_shared<UI::BattleUIManager>(*this);
-
 }
 
 BattleSystem::~BattleSystem() {
@@ -42,6 +42,8 @@ void BattleSystem::EventStart() {
                 RemoveChild(m_Player.first);
                 RemoveChild(m_Enemy.first);
                 m_UIManager->ShowEnemyWinUI();
+                m_MainGame.AppendEvnet(
+                    std::make_shared<EndSystem>(m_MainGame, EndState::Fail));
             }
         });
     m_Enemy.first->BindOnCurrentHealthChange(
@@ -122,10 +124,10 @@ void BattleSystem::RemoveDice(const std::shared_ptr<DiceUtils::Dice> &dice) {
 void BattleSystem::ChangeRound() {
 
     for (auto dice : m_Player.second) {
-        RemoveDice(dice);
+        RemoveChild(dice);
     }
     for (auto dice : m_Enemy.second) {
-        RemoveDice(dice);
+        RemoveChild(dice);
     }
     m_Player.second.clear();
     m_Enemy.second.clear();

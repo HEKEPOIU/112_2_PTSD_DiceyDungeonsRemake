@@ -4,6 +4,7 @@
 #include "Cards/Card.hpp"
 #include <functional>
 #include <memory>
+#include <random>
 #include <stdexcept>
 namespace Cards {
 class CardFactory {
@@ -23,6 +24,12 @@ public:
             throw std::runtime_error("Card not found");
             return nullptr;
         }
+    }
+    static std::shared_ptr<Card> CreateRandomCard() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<unsigned short> disY(1, m_Creators.size());
+        return m_Creators[disY(gen)]();
     }
 
 private:

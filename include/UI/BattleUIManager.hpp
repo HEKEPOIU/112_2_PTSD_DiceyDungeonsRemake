@@ -65,6 +65,7 @@ private:
     std::shared_ptr<Util::GameObject> m_EndTurnBtnIcon;
     std::shared_ptr<Util::GameObject> m_EndTurnBtnText;
     std::shared_ptr<Util::GameObject> m_EndBattleBtn;
+    std::shared_ptr<Util::GameObject> m_FailBtn;
     std::shared_ptr<Utils::EffectBar> m_EnemyEffectBar =
         std::make_shared<Utils::EffectBar>();
     std::shared_ptr<Utils::EffectBar> m_PlayerEffectBar =

@@ -15,6 +15,8 @@ public:
     const Card &GetCard(int id);
 
     bool AddCardById(int id);
+    bool AddRandomCard();
+    bool AddCard(std::shared_ptr<Card> card);
     const std::vector<glm::ivec2> GetAvailableCardPos(int size);
 
     const std::vector<std::vector<std::shared_ptr<Card>>> &GetCardMap() {

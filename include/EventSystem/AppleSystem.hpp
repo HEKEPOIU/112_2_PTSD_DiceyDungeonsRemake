@@ -1,16 +1,16 @@
-#ifndef EVENTSYSTEM_EMPTYSYSTEM_HPP
-#define EVENTSYSTEM_EMPTYSYSTEM_HPP
+#ifndef EVENTSYSTEM_APPLESYSTEM_HPP
+#define EVENTSYSTEM_APPLESYSTEM_HPP
 
 #include "EventSystem/BaseEventSystem.hpp"
-#include "Util/Logger.hpp"
 #include "GameCore/MainGame.hpp"
+
 namespace EventSystem {
-class EmptySystem : public BaseEventSystem {
+class AppleSystem : public BaseEventSystem {
 public:
-    EmptySystem(GameCore::MainGame &mainGame)
+    AppleSystem(GameCore::MainGame &mainGame)
         : BaseEventSystem(mainGame) {}
     void EventStart() override {
-        LOG_ERROR("This system is empty, for test only");
+        m_MainGame.GetPlayerDice()->ModifyCurrentHealth(5);
     };
     void EventUpdate() override {
         m_MainGame.EndEvent();
@@ -18,5 +18,4 @@ public:
     void EventEnd() override {};
 };
 } // namespace EventSystem
-
 #endif

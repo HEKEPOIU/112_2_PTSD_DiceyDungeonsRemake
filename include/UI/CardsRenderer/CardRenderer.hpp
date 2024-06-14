@@ -14,7 +14,7 @@
 namespace UI::CardsRenderer {
 class CardRenderer : public Util::GameObject {
 public:
-    CardRenderer(const std::shared_ptr<Cards::Card> &card);
+    CardRenderer(const std::shared_ptr<Cards::Card> card);
     ~CardRenderer();
 
     void SetTranslate(const glm::vec2 &translate);
@@ -56,13 +56,22 @@ public:
         return {nullptr};
     }
 
+    void SetIndexWithChild(int z) {
+        SetZIndex(z);
+        m_NameObject->SetZIndex(z + 2);
+        m_DescriptionObject->SetZIndex(z + 1);
+        for (auto slot : m_SlotObjects) {
+            slot->SetZIndex(z + 1);
+        }
+    }
+
 private:
     void InitImageMap();
     void SetUpTransform(const std::shared_ptr<Cards::Card> &card);
     int m_Size;
 
     std::vector<std::shared_ptr<RequireSlotRenderer>> m_RequireSlotRenderer;
-    const std::shared_ptr<Cards::Card> &m_Card;
+    const std::shared_ptr<Cards::Card> m_Card;
 
     std::shared_ptr<Util::GameObject> m_NameObject;
     std::shared_ptr<Util::GameObject> m_DescriptionObject;

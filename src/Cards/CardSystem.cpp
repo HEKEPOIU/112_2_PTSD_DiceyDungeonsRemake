@@ -1,6 +1,8 @@
 #include "Cards/CardSystem.hpp"
+#include "Cards/Card.hpp"
 #include "Cards/CardFactory.hpp"
 #include <cstddef>
+#include <memory>
 
 namespace Cards {
 CardSystem::CardSystem(size_t sizeX, size_t sizeY)
@@ -13,6 +15,15 @@ CardSystem::CardSystem(size_t sizeX, size_t sizeY)
 
 bool CardSystem::AddCardById(int id) {
     auto card = CardFactory::CreateCard(id);
+    return AddCard(card);
+}
+
+bool CardSystem::AddRandomCard(){
+    auto card = CardFactory::CreateRandomCard();
+    return AddCard(card);
+}
+
+bool CardSystem::AddCard(std::shared_ptr<Card> card){
     std::vector<glm::ivec2> cardPos = GetAvailableCardPos(card->GetSize());
     if (cardPos.empty()) {
         return false;

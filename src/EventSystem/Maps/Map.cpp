@@ -101,7 +101,7 @@ void Map::GetNextMap() {
     m_Lines.clear();
     m_CurrentLevel += 1;
     if (m_CurrentLevel > m_ItemNum.size() - 1) {
-        m_Owner->ToNextEvent(std::make_shared<EndSystem>(m_Game));
+        m_Owner->ToNextEvent(std::make_shared<EndSystem>(m_Game, EndState::WIN));
         return;
     }
     m_Nodes = GenerateEmptyMap();
@@ -113,7 +113,6 @@ void Map::GetNextMap() {
 
 void Map::SpawnPlayer() {
     if (m_CurrentLevel > m_ItemNum.size() - 1) {
-        m_Owner->ToNextEvent(std::make_shared<EndSystem>(m_Game));
         return;
     }
     std::random_device rd;

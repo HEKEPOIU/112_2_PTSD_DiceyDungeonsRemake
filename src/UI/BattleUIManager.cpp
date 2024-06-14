@@ -11,7 +11,9 @@
 #include <cstddef>
 #include <functional>
 #include <glm/fwd.hpp>
+#include <iostream>
 #include <memory>
+#include <ostream>
 #include <vector>
 
 namespace UI {
@@ -150,6 +152,12 @@ void BattleUIManager::DetectUiClick(const glm::vec2 &pos) {
                 m_CurrentBattle.ChangeBackEvent();
             }
         }
+        if(m_FailBtn != nullptr){
+            if(m_FailBtn->IsOnTop(pos)){
+                m_CurrentBattle.ChangeBackEvent();
+                m_CurrentBattle.ChangeBackEvent();
+            }
+        }
     }
 }
 
@@ -194,6 +202,7 @@ void BattleUIManager::SetCardRenderer(
     int columns = 0;
     bool isNewColumns = false;
     glm::ivec2 cardSize1 = {0, 0};
+    glm::vec2 cardSize2 = {0,0};
     std::vector<glm::ivec2> cardPos;
     for (size_t x = 0; x < cardMap.size(); x++) {
         isNewColumns = false;
@@ -206,20 +215,24 @@ void BattleUIManager::SetCardRenderer(
                 auto newCard = std::make_shared<CardsRenderer::CardRenderer>(
                     cardMap[x][y]);
                 LOG_ERROR(cardMap[x][y]->GetCardName());
+                std::cout << "On the: " << x << " " << y << std::endl;
                 int cardSize = cardMap[x][y]->GetSize();
                 cardRenderers.push_back(newCard);
                 cardPos.push_back({x, y});
                 if (cardSize == 2) {
                     y++;
+                    cardSize2 = newCard->GetScaledSize();
                 } else if (cardSize == 1) {
                     cardSize1 = newCard->GetScaledSize();
                 }
             }
         }
     }
-    int cardXDistance = (cardSize1.x + xSpace);
+    int cardSizeX = cardSize2 == glm::vec2(0,0) ? cardSize1.x : cardSize2.x;
+    int cardXDistance = (cardSizeX + xSpace);
     int width = (columns - 1) * cardXDistance;
     int startXPos = -(width / 2);
+    std::cout << columns << std::endl;
 
     int CardYDistance = (cardSize1.y + ySpace);
     int startYPos = CardYDistance / 2;
@@ -328,7 +341,23 @@ void BattleUIManager::ShowPlayerWinUI(int coin, int giveExp, int nextLevelExp,
     AddChild(nextLevelUi);
 };
 void BattleUIManager::ShowEnemyWinUI() {
+    for (auto card : m_PlayerCardRenderers) {
+        RemoveChild(card);
+    }
+    for (auto card : m_EnemyCardRenderers) {
+        RemoveChild(card);
+    }
+    m_PlayerCardRenderers.clear();
+    m_EnemyCardRenderers.clear();
 
+    m_FailBtn = std::make_shared<Util::GameObject>();
+    m_FailBtn->SetDrawable(
+        std::make_shared<Util::Image>(RESOURCE_DIR "/EndBattleBtn.png"));
+    m_FailBtn->SetZIndex(GetZIndex() + 1);
+    m_FailBtn->m_Transform.scale = {0.75, 0.75};
+    m_FailBtn->m_Transform.translation = {0, -450};
+    AddChild(m_FailBtn);
+   
 };
 
 } // namespace UI

@@ -10,8 +10,9 @@
 
 namespace EventSystem {
 
-EndSystem::EndSystem(GameCore::MainGame &mainGame)
-    : BaseEventSystem(mainGame) {
+EndSystem::EndSystem(GameCore::MainGame &mainGame, EndState state)
+    : BaseEventSystem(mainGame),
+      m_EndText(state == EndState::WIN ? "WIN !" : "FALL...") {
     SetDrawable(std::make_shared<Util::Image>(
         RESOURCE_DIR
         "/graphics/cutscenes/endgame/scene_2/background_1080.png"));
@@ -27,7 +28,7 @@ void EndSystem::EventStart() {
     m_WinIcon = std::make_shared<Util::GameObject>();
     m_WinIcon->SetDrawable(
         std::make_shared<Util::Text>(RESOURCE_DIR "/NotoSans-Bold.ttf", 120,
-                                     "WIN !", Util::Color(222, 222, 29)));
+                                     m_EndText, Util::Color(222, 222, 29)));
     m_WinIcon->m_Transform.translation = {0, 400};
     AddChild(m_WinIcon);
     m_WinIcon->SetZIndex(5);

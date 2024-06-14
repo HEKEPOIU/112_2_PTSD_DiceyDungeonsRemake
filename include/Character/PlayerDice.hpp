@@ -1,9 +1,11 @@
 #ifndef CHARACTER_PLAYERDICE_HPP
 #define CHARACTER_PLAYERDICE_HPP
 
+#include "Cards/Card.hpp"
 #include "Cards/CardSystem.hpp"
 #include "Character/BaseCharacter.hpp"
 #include <array>
+#include <cwchar>
 #include <memory>
 
 namespace Character {
@@ -21,6 +23,7 @@ public:
     void SetExp(int newExp);
     int GetExp() { return m_CurrentExp; };
 
+    bool AddCard(std::shared_ptr<Cards::Card>& card);
 protected:
     std::unique_ptr<Cards::CardSystem> m_BagCards =
         std::make_unique<Cards::CardSystem>(4, 5);

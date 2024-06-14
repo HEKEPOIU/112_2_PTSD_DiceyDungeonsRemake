@@ -1,11 +1,15 @@
 #include "EventSystem/Maps/NodeItem.hpp"
 #include "Character/Enemys/EnemyFactory.hpp"
+#include "EventSystem/AppleSystem.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include "EventSystem/BoxEvent.hpp"
+#include "EventSystem/EmptySystem.hpp"
 #include "EventSystem/ExitSystem.hpp"
 #include "GameCore/MainGame.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "Util/Logger.hpp"
+#include "Util/SpriteSheet.hpp"
 #include <memory>
 
 namespace EventSystem::Maps {
@@ -30,23 +34,40 @@ void NodeItem::InitEventByType(ItemType type) {
         break;
     }
     case ItemType::APPLE: {
-        LOG_ERROR("APPLE is Not Impl");
+        m_Event = std::make_shared<AppleSystem>(m_Game);
+        auto drawable = std::make_shared<Util::SpriteSheet>(
+            RESOURCE_DIR "/graphics/pack1.png");
+        drawable->SetDrawRect({1778, 0, 269, 219});
+        m_Transform.scale = {0.4f, 0.4f};
+        m_Transform.rotation = glm::radians(90.f);
+        m_Offset = {0, 30};
+        SetDrawable(drawable);
         break;
     }
     case ItemType::BOX: {
-        LOG_ERROR("BOX is Not Impl");
+        m_Event = std::make_shared<BoxEvent>(m_Game);
+        auto drawable = std::make_shared<Util::SpriteSheet>(
+            RESOURCE_DIR "/graphics/pack1.png");
+        drawable->SetDrawRect({1675, 264, 186, 245});
+        m_Transform.scale = {0.5f, 0.5f};
+        m_Transform.rotation = glm::radians(90.f);
+        m_Offset = {0, 30};
+        SetDrawable(drawable);
         break;
     }
     case ItemType::CHANGESTORE: {
         LOG_ERROR("CHANGESTORE is Not Impl");
+        m_Event = std::make_shared<EmptySystem>(m_Game);
         break;
     }
     case ItemType::FORGE: {
         LOG_ERROR("FORGE is Not Impl");
+        m_Event = std::make_shared<EmptySystem>(m_Game);
         break;
     }
     case ItemType::GOLDSTORE: {
         LOG_ERROR("GOLDSTORE is Not Impl");
+        m_Event = std::make_shared<EmptySystem>(m_Game);
         break;
     }
     case ItemType::EXIT: {

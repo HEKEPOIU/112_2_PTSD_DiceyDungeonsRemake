@@ -1,6 +1,8 @@
 #include "Character/PlayerDice.hpp"
+#include "Cards/Card.hpp"
 #include "Character/BaseCharacter.hpp"
 #include "EventSystem/BattleSystem.hpp"
+#include <memory>
 
 namespace Character {
 PlayerDice::PlayerDice(const std::string &name, int level, int maxHp,
@@ -29,8 +31,16 @@ void PlayerDice::SetExp(int newExp) {
     if (m_CurrentExp >= currentLevelUpArr) {
         m_Level++;
         m_CurrentExp -= currentLevelUpArr;
-        SetMaxHealth(m_HpPerLevel[m_Level-1]);
-        SetCurrentHealth(m_HpPerLevel[m_Level-1]);
+        SetMaxHealth(m_HpPerLevel[m_Level - 1]);
+        SetCurrentHealth(m_HpPerLevel[m_Level - 1]);
     }
 };
+
+bool PlayerDice::AddCard(std::shared_ptr<Cards::Card>& card){
+    bool isWork = m_BattleCards->AddCard(card);
+    if(!isWork){
+        isWork = m_BagCards->AddCard(card);
+    }
+    return isWork;
+}
 } // namespace Character

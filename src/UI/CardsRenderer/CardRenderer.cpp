@@ -1,10 +1,10 @@
 #include "UI/CardsRenderer/CardRenderer.hpp"
-#include "Util/Logger.hpp"
 #include "Util/Text.hpp"
+#include <iostream>
 
 namespace UI::CardsRenderer {
 
-CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
+CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> card)
     : m_Size(card->GetSize()),
       m_Card(card) {
     if (m_ImageMap.empty()) {
@@ -23,6 +23,7 @@ CardRenderer::CardRenderer(const std::shared_ptr<Cards::Card> &card)
 
 CardRenderer::~CardRenderer() {
     m_Card->UnBindOnCardUsedEvent("OnCardUsedUI");
+    std::cout << "UnBound" << std::endl;
     // I don't know why it's sometime cause segfault devided by zero??
 }
 
